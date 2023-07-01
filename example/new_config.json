@@ -1,0 +1,51 @@
+{
+    "paths": {
+        "modmgr": "D:\\Games\\Steam\\steamapps\\common\\rFactor 2\\Bin64\\ModMgr.exe",
+        "rf2": "D:\\Games\\Steam\\steamapps\\common\\rFactor 2",
+        "workshop": "D:\\Games\\Steam\\steamapps\\workshop\\content\\365960"
+    },
+    "league": {
+        "name": "GSR CUP 2023 1",
+        "carCategory": "GSR Cup 2023-1",
+        "versionPrefix": "_GSR23_1",
+        "carFiles": [
+            "GSR_Upgrades.ini",
+            "brand_logo.png"
+        ],
+        "leagueFiles": [
+            "Porsche_992_GT3_Cup_2022_v1.02.rfcmp"
+        ],
+        "cars": [
+            {
+                "id": "Porsche_992_GT3_Cup_2022",
+                "workshopId": "2904331050",
+                "versionOverwrite": "1.04"
+            },
+            {
+                "id": "Porsche_992_GT3_2023",
+                "workshopId": "2904331050",
+                "versionOverwrite": "1.00"
+            }
+        ],
+        "driver": [
+            {
+                "name": "Max Muster",
+                "number": 69,
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Musterteam"
+            },
+            {
+                "name": "Michi Schumi",
+                "number": 1,
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Musterteam"
+            },
+            {
+                "name": "The Stig",
+                "number": 42,
+                "car": "Porsche_992_GT3_2023",
+                "team": "The Stig"
+            }
+        ]
+    }
+}

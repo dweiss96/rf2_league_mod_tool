@@ -1,0 +1,248 @@
+{
+    "modmgrPath": "D:\\Games\\Steam\\steamapps\\common\\rFactor 2\\Bin64\\ModMgr.exe",
+    "rf2Path": "D:\\Games\\Steam\\steamapps\\common\\rFactor 2",
+    "workshopPath": "D:\\Games\\Steam\\steamapps\\workshop\\content\\365960",
+
+    "carFiles": [
+        "GSR_Upgrades.ini",
+        "brand_logo.png"
+    ],
+
+    "leagueFiles": [
+        "Porsche_992_GT3_Cup_2022_v1.02.rfcmp"
+    ],
+
+    "optionalDriverFiles": [
+        "skin_region.dds",
+        "skin.json",
+        "skin_helmet.dds",
+        "skin_driver.dds",
+        "skindriver.dds",
+        "skinDRIVER.dds",
+        "skinextra0.dds",
+        "skinextra2.dds",
+        "skinEXTRA0.dds",
+        "skinEXTRA1.dds",
+        "skinEXTRA7.dds",
+        "skinhelmet.dds",
+        "skinHELMET.dds",
+        "skinwindow.dds",
+        "skin_windowsout.dds",
+        "skinWINDOWSOUT.dds",
+        "skinwindshieldout.dds",
+        "skinWindshieldOut.dds",
+        "skinWindshieldIn.dds",
+        "skinicon.png",
+        "skin-icon-2048x1152.png",
+        "skin-icon-1024x576.png",
+        "skin-icon-512x288.png",
+        "skin-icon-256x144.png",
+        "skin-icon-128x72.png"
+    ],
+    "requiredDriverFiles": [
+        "skin.dds"
+    ],
+
+    "cars": [
+        {
+            "id": "Porsche_992_GT3_Cup_2022",
+            "workshopId": "2904331050",
+            "versionOverwrite": "1.04"
+        }
+    ],
+    "league": {
+        "name": "GSR CUP 2023 1",
+        "carCategory": "GSR Cup 2023-1",
+        "versionPrefix": "_GSR23_1",
+        "testDriver": [
+            {
+                "name": "GermanSimRacing.de",
+                "team": "GSR Cup",
+                "number": "00",
+                "car": "Porsche_992_GT3_Cup_2022"
+            }
+        ],
+        "driver": [
+            {
+                "name": "Peter Hummel",
+                "number": "94",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Peter Hummel"
+            },
+            {
+                "name": "Peter Pieszek",
+                "number": "44",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Peter Pieszek"
+            },
+            {
+                "name": "Lukas Bartels",
+                "number": "48",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Lukas Bartels"
+            },
+            {
+                "name": "Stefan Erxmeyer",
+                "number": "87",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Stefan Erxmeyer"
+            },
+            {
+                "name": "Jonas Lagesson",
+                "number": "25",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Jonas Lagesson"
+            },
+            {
+                "name": "Kevin Karas",
+                "number": "41",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Kevin Karas"
+            },
+            {
+                "name": "Julien Pereira",
+                "number": "17",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Julien Pereira"
+            },
+            {
+                "name": "Jerome Delbarre",
+                "number": "85",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Jerome Delbarre"
+            },
+            {
+                "name": "Andre Gaida",
+                "number": "77",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Andre Gaida"
+            },
+            {
+                "name": "Hendrik Fischer",
+                "number": "26",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Hendrik Fischer"
+            },
+            {
+                "name": "Alex Gleizes",
+                "number": "19",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Alex Gleizes"
+            },
+            {
+                "name": "David Riedl",
+                "number": "34",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "David Riedl"
+            },
+            {
+                "name": "Daniel Weiss",
+                "number": "96",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Motorheads"
+            },
+            {
+                "name": "Sven Heide",
+                "number": "69",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Motorheads"
+            },
+            {
+                "name": "Marcel Wolf",
+                "number": "8",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "B4B"
+            },
+            {
+                "name": "Christian Tropeano",
+                "number": "72",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "B4B"
+            },
+            {
+                "name": "Torsten Spindler",
+                "number": "70",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "vaute racing"
+            },
+            {
+                "name": "Volker Schmidt",
+                "number": "38",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "vaute racing"
+            },
+            {
+                "name": "Reiko Arnold",
+                "number": "75",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "RUR"
+            },
+            {
+                "name": "Udo Remme",
+                "number": "9",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "RUR"
+            },
+            {
+                "name": "Thomas Hoelzl",
+                "number": "14",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Upper Austria Racing"
+            },
+            {
+                "name": "Andrej Warkentin",
+                "number": "27",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Silpion ITSM Racing Team"
+            },
+            {
+                "name": "Connor Roth",
+                "number": "55",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "One punt behind"
+            },
+            {
+                "name": "Kay Uwe Fischer",
+                "number": "68",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Deichgraf"
+            },
+            {
+                "name": "Thorsten Kaps",
+                "number": "7",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "Deichgraf"
+            },
+            {
+                "name": "Fred Bart",
+                "number": "18",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "MSR"
+            },
+            {
+                "name": "Cyrille Canavate",
+                "number": "29",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "MSR"
+            },
+            {
+                "name": "Clement Gergaud",
+                "number": "88",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "RSGT by Clark Powell"
+            },
+            {
+                "name": "Noa Pereira",
+                "number": "86",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "RSGT by Clark Powell"
+            },
+            {
+                "name": "Thomas Nowicki",
+                "number": "83",
+                "car": "Porsche_992_GT3_Cup_2022",
+                "team": "RSGT by Clark Powell #2"
+            }
+        ]
+    }
+}
