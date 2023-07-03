@@ -1,0 +1,7 @@
+export global WorkshopPathController {
+  in-out property<string> path: "";
+  in-out property<bool> is-valid: false;
+
+  pure callback path-accepted(string);
+  pure callback choose-dir();
+}
