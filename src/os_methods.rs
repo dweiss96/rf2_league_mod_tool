@@ -3,11 +3,11 @@ use std::path::PathBuf;
 use glob::glob;
 use rfd::FileDialog;
 
-pub fn pick_file(expected_filename:&str) -> Option<String> {
+pub fn pick_file_with_validation(expected_filename:&str) -> Option<String> {
   let file = FileDialog::new()
     .add_filter("application", &["exe"])
     .add_filter("rust", &["rs", "toml"])
-    .set_directory("/")
+    .set_directory(".")
     .pick_file();
 
   let file_matches_name = file.as_ref().filter(|f| {
@@ -25,7 +25,7 @@ pub fn pick_file(expected_filename:&str) -> Option<String> {
 
 pub fn pick_folder() -> Option<String> {
   FileDialog::new()
-    .set_directory("/")
+    .set_directory(".")
     .pick_folder()
     .map(|f| { f.clone().as_path().to_str().map(|s| {format!("{}", s)}) }).flatten()
 }

@@ -1,0 +1,50 @@
+import { Button, LineEdit} from "std-widgets.slint";
+
+export component FilePathSelection inherits Rectangle {
+  in-out property<string> label;
+  in-out property<string> path;
+  in-out property<bool> is-valid;
+
+  states [
+    valid when is-valid : {
+      background: darkgreen;
+      out {
+        animate * { duration: 500ms; }
+      }
+      in {
+        animate * { duration: 500ms; }
+      }
+    }
+  ]
+
+  height: 50px;
+  background: darkorange;
+  border-radius: 15px;
+
+  HorizontalLayout {
+    spacing: 10px;
+    padding: 10px;
+    Text {
+      font-size: 20px;
+      text: label;
+      vertical-alignment: center;
+      padding-left: 20px;
+      color: white;
+    }
+
+    val := LineEdit {
+      text: path;
+      edited => { root.edited() }
+      accepted => { root.path-accepted(self.text) }
+    }
+    Button {
+      width: 100px;
+      text: "Choose";
+      clicked => { root.choose-click() }
+    }
+  }
+
+  callback edited;
+  callback path-accepted(string);
+  callback choose-click;
+}

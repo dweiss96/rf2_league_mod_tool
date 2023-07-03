@@ -1,24 +1,35 @@
 import { Button, VerticalBox , LineEdit} from "std-widgets.slint";
+import { FilePathSelection } from "components/file-selection.slint";
 
 export component Demo inherits Window {
   property<brush> b2: Colors.red;
-  preferred-width: 400px;
-  preferred-height: 200px;
-  Text {
-    // x: 10px;
-    // y: 10px;
-    text: "hello world 3";
-    color: green;
-  }
+  preferred-width: 1000px;
+  preferred-height: 500px;
+  padding: 10px;
+  background: black;
+    ws-select := FilePathSelection{
+        y: 10px;
+        x: 10px;
+        width: 980px;
+        label: "Path of rF2 ModMgr.exe";
+        text-accepted(s) => {
+            root.ws-text-accepted(s);
+        }
+        choose-click => {
+            root.ws-choose-dir();
+        }
+    }
   rect := Rectangle {
-    y: 130px;
+
+    y: 600px;
+    x: 10px;
+    width: 900px;
     height: 50px;
-    background: green;
+    background: darkorange;
+    border-radius: 15px;
     val := LineEdit {
         x: 10px;
         width: 220px;
-        edited => {rect.background = Colors.yellow }
-        accepted => { root.validate-dir(self.text) }
     }
     Button {
         x: 240px;
@@ -30,14 +41,23 @@ export component Demo inherits Window {
         }
     }
   }
-    callback choose-dir;
-    callback validate-dir(string);
 
-    callback change-dir(string);
-    change-dir(d) => { 
-      val.text = d;
-      rect.background = Colors.yellow;
+
+    callback ws-text-accepted(string);
+
+    
+    callback ws-change-text(string);
+    ws-change-text(s) => {
+        val.text = s;
+        root.background = Colors.darkorange
     }
+    callback ws-validate-text;
+    ws-validate-text => { root.background = Colors.darkgreen }
+    
+    callback ws-choose-dir;
+    callback change-dir(string);
+    change-dir(d) => { rect.background = Colors.darkorange; }
+    callback validate-dir;
     callback dir-validated;
-    dir-validated() => { rect.background = Colors.green }
+    dir-validated() => { rect.background = Colors.darkgreen }
 }
