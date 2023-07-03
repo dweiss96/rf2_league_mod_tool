@@ -1,0 +1,43 @@
+import { Button, VerticalBox , LineEdit} from "std-widgets.slint";
+
+export component Demo inherits Window {
+  property<brush> b2: Colors.red;
+  preferred-width: 400px;
+  preferred-height: 200px;
+  Text {
+    // x: 10px;
+    // y: 10px;
+    text: "hello world 3";
+    color: green;
+  }
+  rect := Rectangle {
+    y: 130px;
+    height: 50px;
+    background: green;
+    val := LineEdit {
+        x: 10px;
+        width: 220px;
+        edited => {rect.background = Colors.yellow }
+        accepted => { root.validate-dir(self.text) }
+    }
+    Button {
+        x: 240px;
+        width: 150px;
+        text: "Choose Directory";
+        clicked => {
+            rect.background = b2;
+            root.choose-dir()
+        }
+    }
+  }
+    callback choose-dir;
+    callback validate-dir(string);
+
+    callback change-dir(string);
+    change-dir(d) => { 
+      val.text = d;
+      rect.background = Colors.yellow;
+    }
+    callback dir-validated;
+    dir-validated() => { rect.background = Colors.green }
+}
