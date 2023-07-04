@@ -1,7 +1,6 @@
 use crate::os_methods;
 use std::path::PathBuf;
-use slint::ComponentHandle;
-use slint::SharedString;
+use slint::{ComponentHandle, SharedString};
 use crate::slint_generatedMain::*;
 
 pub fn initialize(window: Main) {

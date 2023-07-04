@@ -1,8 +1,15 @@
 import { Button, VerticalBox , LineEdit} from "std-widgets.slint";
 import { FilePathSelection } from "components/file-selection.slint";
 import { WorkshopPathController } from "controller/workshop-path.slint";
+import { Rfactor2PathController } from "controller/rfactor2-path.slint";
+import { AppPathsBar } from "components/app-paths.slint";
 
-export { WorkshopPathController }
+export { WorkshopPathController, Rfactor2PathController }
+
+export global Images {
+  in-out property <image> steam;
+  in-out property <image> rfactor2;
+}
 
 export component Main inherits Window {
   property<string> mgr-path: "";
@@ -11,8 +18,18 @@ export component Main inherits Window {
   preferred-height: 500px;
   padding: 10px;
   background: black;
+  AppPathsBar { 
+    y:0;
+    x:0;
+    width: 100%;
+    height: 50px;
+    steam-logo: Images.steam;
+    steam-valid: WorkshopPathController.is-valid;
+    rf2-logo: Images.rfactor2;
+    rf2-valid: Rfactor2PathController.is-valid;
+  }
   ws-select := FilePathSelection{
-      y: 10px;
+      y: 50px;
       x: 10px;
       width: 980px;
       label: "Path of rF2 workshop files:";
@@ -23,23 +40,14 @@ export component Main inherits Window {
       edited => { WorkshopPathController.is-valid = false }
   }
   modmgr-select := FilePathSelection{
-      y: 70px;
-      x: 10px;
-      width: 980px;
-      label: "Path of rF2 ModMgr.exe:";
-      path: mgr-path;
-      path-accepted(s) => {
-          root.mgr-path-accepted(s);
-      }
-      choose-click => {
-          root.mgr-choose-dir();
-      }
+    y: 100px;
+    x: 10px;
+    width: 980px;
+    label: "Path of rF2 ModMgr.exe:";
+      path: Rfactor2PathController.path;
+      is-valid: Rfactor2PathController.is-valid;
+      path-accepted(s) => { Rfactor2PathController.path-accepted(s) }
+      choose-click => { Rfactor2PathController.choose-dir() }
+      edited => { Rfactor2PathController.is-valid = false }
   }
-
-  callback mgr-path-accepted(string);
-  callback mgr-choose-dir();
-  callback mgr-change-path(string);
-  mgr-change-path(s) => { mgr-path = s; }
-  callback mgr-validate-path;
-  // mgr-validate-path => { modmgr-select.validate-path(); }
 }

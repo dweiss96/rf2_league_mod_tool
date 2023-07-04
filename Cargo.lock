@@ -2777,7 +2777,9 @@ name = "rf2_ltc"
 version = "0.1.0"
 dependencies = [
  "automod",
+ "base64",
  "glob",
+ "image",
  "rfd",
  "serde",
  "serde_json",
