@@ -1,7 +1,10 @@
-import { Button, VerticalBox , LineEdit} from "std-widgets.slint";
+import { Button, VerticalBox , LineEdit, TabWidget} from "std-widgets.slint";
 import { FilePathSelection } from "components/file-selection.slint";
 import { WorkshopPathController } from "controller/workshop-path.slint";
 import { Rfactor2PathController } from "controller/rfactor2-path.slint";
+import { CarsConfig } from "pages/cars-config.slint";
+import { DriversConfig } from "pages/drivers-config.slint";
+import { GeneralLeagueConfig } from "pages/league-config.slint";
 import { AppPathsBar } from "app-paths-bar.slint";
 
 export { WorkshopPathController, Rfactor2PathController }
@@ -25,5 +28,21 @@ export component Main inherits Window {
     height: 50px;
     steam-logo: Images.steam;
     rf2-logo: Images.rfactor2;
+  }
+  TabWidget {
+    x: 0;
+    y: 50px;
+    Tab {
+      title: "General Data";
+      GeneralLeagueConfig {}
+    }
+    Tab {
+      title: "Cars Data";
+      CarsConfig {}
+    }
+    Tab {
+      title: "Drivers Data";
+      DriversConfig {}
+    }
   }
 }
