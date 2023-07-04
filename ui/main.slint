@@ -2,7 +2,7 @@ import { Button, VerticalBox , LineEdit} from "std-widgets.slint";
 import { FilePathSelection } from "components/file-selection.slint";
 import { WorkshopPathController } from "controller/workshop-path.slint";
 import { Rfactor2PathController } from "controller/rfactor2-path.slint";
-import { AppPathsBar } from "components/app-paths.slint";
+import { AppPathsBar } from "app-paths-bar.slint";
 
 export { WorkshopPathController, Rfactor2PathController }
 
@@ -24,30 +24,6 @@ export component Main inherits Window {
     width: 100%;
     height: 50px;
     steam-logo: Images.steam;
-    steam-valid: WorkshopPathController.is-valid;
     rf2-logo: Images.rfactor2;
-    rf2-valid: Rfactor2PathController.is-valid;
-  }
-  ws-select := FilePathSelection{
-      y: 50px;
-      x: 10px;
-      width: 980px;
-      label: "Path of rF2 workshop files:";
-      path: WorkshopPathController.path;
-      is-valid: WorkshopPathController.is-valid;
-      path-accepted(s) => { WorkshopPathController.path-accepted(s) }
-      choose-click => { WorkshopPathController.choose-dir() }
-      edited => { WorkshopPathController.is-valid = false }
-  }
-  modmgr-select := FilePathSelection{
-    y: 100px;
-    x: 10px;
-    width: 980px;
-    label: "Path of rF2 ModMgr.exe:";
-      path: Rfactor2PathController.path;
-      is-valid: Rfactor2PathController.is-valid;
-      path-accepted(s) => { Rfactor2PathController.path-accepted(s) }
-      choose-click => { Rfactor2PathController.choose-dir() }
-      edited => { Rfactor2PathController.is-valid = false }
   }
 }
