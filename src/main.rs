@@ -6,6 +6,7 @@ mod controller {
 }
 mod os_methods;
 mod view;
+mod tasks;
 
 slint::include_modules!();
 

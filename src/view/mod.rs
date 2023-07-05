@@ -1,5 +1,4 @@
-use crate::controller::modmgr_path_controller;
-use crate::controller::workshop_path_controller;
+use crate::controller::*;
 
 use crate::slint_generatedMain::*;
 use slint::{ComponentHandle, Image, Rgba8Pixel, SharedPixelBuffer};
@@ -12,6 +11,7 @@ pub fn run_main_window() {
     // initialize controller
     workshop_path_controller::initialize(main_window.clone_strong());
     modmgr_path_controller::initialize(main_window.clone_strong());
+    generator_controller::initialize(main_window.clone_strong());
 
     load_images(main_window.clone_strong());
     main_window.run().unwrap()

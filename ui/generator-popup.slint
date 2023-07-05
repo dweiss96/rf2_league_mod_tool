@@ -1,0 +1,73 @@
+import { Button, VerticalBox , LineEdit, TabWidget} from "std-widgets.slint";
+
+export enum GeneratorStates { ready, delete-old, create-dir, copy-files, generate-mas-files, generate-rfcmp-files, failed, finished }
+
+export global GeneratorState {
+  in-out property <string> output-log;
+  in-out property <GeneratorStates> current-state;
+  in-out property <string> current-state-description;
+  callback start();
+  callback cancel();
+}
+
+export component GeneratorAction inherits Rectangle {
+  in-out property<int> parent-height;
+  in-out property<int> parent-width;
+
+  Button {
+    width: parent.width;
+    text: "Generate Mod Package";
+    clicked => {
+      logging.show();
+      GeneratorState.start();
+    }
+  }
+  logging := PopupWindow {
+    width: parent-width * 1px;
+    height: parent-height * 1px;
+    close-on-click: false;
+    Rectangle {
+      width: 100%;
+      height: 100%;
+      background: black;
+      VerticalLayout {
+        spacing: 10px;
+        Text{
+          width: 100%;
+          height: 50px;
+          text: GeneratorState.output-log;
+        }
+        Text{
+          width: 100%;
+          height: (parent-height - 150) * 1px;
+          text: GeneratorState.current-state-description;
+        }
+        if GeneratorState.current-state == GeneratorStates.failed : Button {
+          width: parent.width;
+          text: "Close Generation Logging";
+          clicked => {
+            logging.close();
+          }
+        }
+        if GeneratorState.current-state == GeneratorStates.finished : Button {
+          width: parent.width;
+          text: "Close Generation Logging";
+          clicked => {
+            logging.close();
+          }
+        }
+        if GeneratorState.current-state != GeneratorStates.failed && GeneratorState.current-state != GeneratorStates.finished : Button {
+          width: parent.width;
+          text: "Cancel Progress";
+          clicked => {
+            GeneratorState.cancel();
+            logging.close();
+          }
+        }
+      }
+    }
+  }
+
+  callback close();
+  close => { logging.close() }
+}

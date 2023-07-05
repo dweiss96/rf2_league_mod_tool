@@ -6,8 +6,9 @@ import { CarsConfig } from "pages/cars-config.slint";
 import { DriversConfig } from "pages/drivers-config.slint";
 import { GeneralLeagueConfig } from "pages/league-config.slint";
 import { AppPathsBar } from "app-paths-bar.slint";
+import { GeneratorState, GeneratorStates, GeneratorAction } from "generator-popup.slint";
 
-export { WorkshopPathController, Rfactor2PathController }
+export { WorkshopPathController, Rfactor2PathController, GeneratorState, GeneratorStates }
 
 export global Images {
   in-out property <image> steam;
@@ -29,9 +30,18 @@ export component Main inherits Window {
     steam-logo: Images.steam;
     rf2-logo: Images.rfactor2;
   }
-  TabWidget {
+  GeneratorAction {
     x: 0;
     y: 50px;
+    height: 50px;
+    width: 100%;
+
+    parent-height: (root.height/1px)-50;
+    parent-width: root.width/1px;
+  }
+  TabWidget {
+    x: 0;
+    y: 100px;
     Tab {
       title: "General Data";
       GeneralLeagueConfig {}
