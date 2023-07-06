@@ -3,18 +3,37 @@ use crate::controller::*;
 use crate::slint_generatedMain::*;
 use slint::{ComponentHandle, Image, Rgba8Pixel, SharedPixelBuffer};
 
+use crate::tasks::ProcessHandle;
 use image;
 
 pub fn run_main_window() {
     let main_window = Main::new().unwrap();
 
+    let mut generator_thread: Option<ProcessHandle> = None;
+    let mut output_thread: Option<std::thread::JoinHandle<()>> = None;
+
     // initialize controller
     workshop_path_controller::initialize(main_window.clone_strong());
     modmgr_path_controller::initialize(main_window.clone_strong());
-    generator_controller::initialize(main_window.clone_strong());
+    generator_controller::initialize(
+        main_window.clone_strong(),
+        &mut generator_thread,
+        &mut output_thread,
+    );
 
     load_images(main_window.clone_strong());
-    main_window.run().unwrap()
+    main_window.run().unwrap();
+
+    println!("finish all threads");
+    match (generator_thread, output_thread) {
+        (Some(gt), Some(ot)) => {
+            gt.kill();
+            ot.join().unwrap_or_default();
+        }
+        (None, Some(ot)) => ot.join().unwrap_or_default(),
+        (Some(gt), None) => gt.kill(),
+        _ => {}
+    }
 }
 
 fn load_images(window: Main) {

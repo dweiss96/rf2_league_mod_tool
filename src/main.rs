@@ -5,8 +5,8 @@ mod controller {
     automod::dir!(pub "src/controller");
 }
 mod os_methods;
-mod view;
 mod tasks;
+mod view;
 
 slint::include_modules!();
 

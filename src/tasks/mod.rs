@@ -1,38 +1,29 @@
-use std::{io::{BufRead, BufReader}, thread};
 use std::process::{Child, Command, Stdio};
 use std::sync::mpsc::Sender;
 use std::thread::JoinHandle;
+use std::{
+    io::{BufRead, BufReader},
+    thread,
+};
 
 automod::dir!("src/tasks");
 
 pub struct ProcessHandle {
     child: Child,
     sender: Sender<Option<String>>,
-    output_handle: JoinHandle<()>
+    output_handle: JoinHandle<()>,
 }
 
 impl ProcessHandle {
-    pub fn wait(mut self) {
-        _ = self.child.wait();
-        _ = self.output_handle.join().unwrap();
-        self.sender.send(None).unwrap();
-    }
-    pub fn wait_with(mut self, external_handle: JoinHandle<()>) {
-        _ = self.child.wait();
-        _ = self.output_handle.join().unwrap();
-        self.sender.send(None).unwrap_or_default();
-        _ = external_handle.join().unwrap_or_default();
-    }
-    pub fn _kill(mut self) {
+    // pub fn wait(mut self) {
+    //     _ = self.child.wait();
+    //     _ = self.output_handle.join().unwrap_or_default();
+    //     self.sender.send(None).unwrap_or_default();
+    // }
+    pub fn kill(mut self) {
         _ = self.child.kill();
         _ = self.output_handle.join().unwrap();
         self.sender.send(None).unwrap();
-    }
-    pub fn _kill_with<T>(mut self, external_handle: JoinHandle<T>) {
-        _ = self.child.kill();
-        _ = self.output_handle.join().unwrap();
-        self.sender.send(None).unwrap();
-        _ = external_handle.join().unwrap();
     }
 }
 
@@ -48,24 +39,37 @@ impl ProcessHandle {
 ///
 /// returns: ProcessHandle to interact with the threads
 ///
-// pub fn run_process_with_output(command: &str, args: Vec<&str>, do_on_line: fn(String) -> ()) -> ProcessHandle {
-pub fn run_process_with_output(command: &str, args: Vec<&str>, sender: Sender<Option<String>>) -> ProcessHandle {
+pub fn run_process_with_output(
+    command: &str,
+    args: Vec<&str>,
+    sender: Sender<Option<String>>,
+) -> ProcessHandle {
     let mut child = Command::new(command)
         .args(args)
-        .stdout(Stdio::piped()).spawn().unwrap();
+        .stdout(Stdio::piped())
+        .spawn()
+        .unwrap();
 
-    let stdout = child.stdout.take().ok_or_else(|| "Could not connect to StdOut").unwrap();
+    let stdout = child
+        .stdout
+        .take()
+        .ok_or_else(|| "Could not connect to StdOut")
+        .unwrap();
     let reader = BufReader::new(stdout);
 
-    let output_handle = thread::spawn({let s = sender.clone(); move ||{
-        reader.lines()
-            .filter_map(|line| line.ok())
-            .for_each(|line| s.send(Some(line)).unwrap_or_default());
-    }});
+    let output_handle = thread::spawn({
+        let s = sender.clone();
+        move || {
+            reader
+                .lines()
+                .filter_map(|line| line.ok())
+                .for_each(|line| s.send(Some(line)).unwrap_or_default());
+        }
+    });
 
     ProcessHandle {
         child,
         sender,
-        output_handle
+        output_handle,
     }
 }
