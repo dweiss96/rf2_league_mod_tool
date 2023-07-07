@@ -98,7 +98,7 @@ mod tests {
         "#;
 
         let league_and_driver = get_league_and_driver();
-        assert_eq!(_substitute_veh_fields(input, league_and_driver.0, league_and_driver.1), target);
+        assert_eq!(substitute_veh_fields(input, league_and_driver.0, league_and_driver.1), target);
     }
     
     #[test]
@@ -170,7 +170,7 @@ mod tests {
         "#;
 
         let league_and_driver = get_league_and_driver();
-        assert_eq!(_substitute_veh_fields(input, league_and_driver.0, league_and_driver.1), target);
+        assert_eq!(substitute_veh_fields(input, league_and_driver.0, league_and_driver.1), target);
     }
     
     #[test]
@@ -242,12 +242,12 @@ mod tests {
         "#;
     
         let league_and_driver = get_league_and_driver();
-        assert_eq!(_substitute_veh_fields(input, league_and_driver.0, league_and_driver.1), target);
+        assert_eq!(substitute_veh_fields(input, league_and_driver.0, league_and_driver.1), target);
     }
     
 }
 
-pub fn _substitute_veh_fields(template: &str, league_config: League, driver: Driver) -> String {
+pub fn substitute_veh_fields(template: &str, league_config: League, driver: Driver) -> String {
     return template
         .replace("{{CLASS}}", &league_config.car_class)
         .replace("{{CATEGORY}}", &league_config.car_category)
