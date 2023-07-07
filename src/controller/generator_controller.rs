@@ -40,10 +40,14 @@ pub fn initialize(main: Main, generator_thread: *mut Option<ProcessHandle>, outp
     ww.upgrade().unwrap().global::<GeneratorState>().set_current_state_description(SharedString::from("Manually Canceled"));
   }});
 
+  let weak_main = main.as_weak();
   let local_output_thread = thread::spawn(move || {
     loop {
       match rx.recv() {
-        Ok(Some(line)) => println!("{}", line),
+        Ok(Some(line)) => {
+          let handle_copy = weak_main.clone();
+          let _ = slint::invoke_from_event_loop(move || handle_copy.unwrap().global::<GeneratorState>().invoke_add_log_line(line.into()));
+        }, // println!("{}", line),
         Ok(None) => break,
         _ => {}
       }

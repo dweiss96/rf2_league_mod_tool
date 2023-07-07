@@ -10,12 +10,12 @@ export global GeneratorState {
   callback start();
   callback cancel();
 
-  callback set_log(string);
-  set_log(l) => {
+  callback set-log(string);
+  set-log(l) => {
     output-log = l;
   }
-  callback add_log_line(string);
-  add_log_line(l) => {
+  callback add-log-line(string);
+  add-log-line(l) => {
     output-log += "\n";
     output-log += l;
   }
@@ -45,7 +45,7 @@ export component GeneratorAction inherits Rectangle {
         spacing: 10px;
         Text{
           width: 100%;
-          height: 50px;
+          height: 300px;
           text: GeneratorState.output-log;
         }
         Text{
