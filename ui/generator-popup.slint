@@ -3,11 +3,22 @@ import { Button, VerticalBox , LineEdit, TabWidget} from "std-widgets.slint";
 export enum GeneratorStates { ready, delete-old, create-dir, copy-files, generate-mas-files, generate-rfcmp-files, failed, finished }
 
 export global GeneratorState {
+  in-out property <[string]> output-logs;
   in-out property <string> output-log;
   in-out property <GeneratorStates> current-state;
   in-out property <string> current-state-description;
   callback start();
   callback cancel();
+
+  callback set_log(string);
+  set_log(l) => {
+    output-log = l;
+  }
+  callback add_log_line(string);
+  add_log_line(l) => {
+    output-log += "\n";
+    output-log += l;
+  }
 }
 
 export component GeneratorAction inherits Rectangle {

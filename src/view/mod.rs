@@ -1,5 +1,4 @@
 use crate::controller::*;
-
 use crate::slint_generatedMain::*;
 use slint::{ComponentHandle, Image, Rgba8Pixel, SharedPixelBuffer};
 

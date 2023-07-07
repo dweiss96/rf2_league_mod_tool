@@ -17,9 +17,9 @@ pub fn initialize(main: Main, generator_thread: *mut Option<ProcessHandle>, outp
   let (tx, rx) = mpsc::channel::<Option<String>>();
 
   main.global::<GeneratorState>().on_start({ let ww = main.as_weak(); move || {
-    ww.upgrade().expect("\n\ncould not unwrap weak window on start 1\n\n").global::<GeneratorState>().set_output_log(SharedString::from(""));
-    ww.upgrade().expect("\n\ncould not unwrap weak window on start 2\n\n").global::<GeneratorState>().set_current_state(GeneratorStates::CopyFiles);
-    ww.upgrade().expect("\n\ncould not unwrap weak window on start 3\n\n").global::<GeneratorState>().set_current_state_description(SharedString::from("Copying Files"));
+    ww.upgrade().unwrap().global::<GeneratorState>().set_output_log(SharedString::from(""));
+    ww.upgrade().unwrap().global::<GeneratorState>().set_current_state(GeneratorStates::CopyFiles);
+    ww.upgrade().unwrap().global::<GeneratorState>().set_current_state_description(SharedString::from("Copying Files"));
 
     let local_process_handle = run_process_with_output("ping", vec!["-c","10","bigbl4ckw0lf.de"], tx.clone());
 
@@ -36,19 +36,14 @@ pub fn initialize(main: Main, generator_thread: *mut Option<ProcessHandle>, outp
         None::<()>
       });
     }
-    ww.upgrade().expect("\n\ncould not unwrap weak window on cancel 1\n\n").global::<GeneratorState>().set_current_state(GeneratorStates::Failed);
-    ww.upgrade().expect("\n\ncould not unwrap weak window on cancel 2\n\n").global::<GeneratorState>().set_current_state_description(SharedString::from("Manually Canceled"));
+    ww.upgrade().unwrap().global::<GeneratorState>().set_current_state(GeneratorStates::Failed);
+    ww.upgrade().unwrap().global::<GeneratorState>().set_current_state_description(SharedString::from("Manually Canceled"));
   }});
 
   let local_output_thread = thread::spawn(move || {
     loop {
       match rx.recv() {
-        Ok(Some(line)) => {
-          println!("{}", line);
-          // let previous_log = main.global::<GeneratorState>().get_output_log();
-          // let _new_log = previous_log.add("\n").add(line.as_str());
-          // let state = main.global::<GeneratorState>().set_output_log(SharedString::from(line));
-        },
+        Ok(Some(line)) => println!("{}", line),
         Ok(None) => break,
         _ => {}
       }
