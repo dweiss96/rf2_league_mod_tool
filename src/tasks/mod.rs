@@ -6,6 +6,10 @@ use std::{
     thread,
 };
 
+use crate::models::driver::Driver;
+use crate::models::league::League;
+use tempfile::tempdir;
+
 automod::dir!("src/tasks");
 
 pub struct ProcessHandle {
@@ -72,4 +76,18 @@ pub fn run_process_with_output(
         sender,
         output_handle,
     }
+}
+
+pub fn generate(league: League, driver: Driver) {
+    // Create a directory inside of `std::env::temp_dir()`.
+    let tmp_dir = tempdir().unwrap();
+
+    copy_files::copy("", tmp_dir.path().to_str().unwrap(), league, driver);
+
+    // By closing the `TempDir` explicitly, we can check that it has
+    // been deleted successfully. If we don't close it explicitly,
+    // the directory will still be deleted when `dir` goes out
+    // of scope, but we won't know whether deleting the directory
+    // succeeded.
+    tmp_dir.close().unwrap();
 }

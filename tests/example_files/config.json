@@ -1,0 +1,56 @@
+{
+    "paths": {
+        "modmgr": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\rFactor 2\\Bin64\\ModMgr.exe",
+        "rf2": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\rFactor 2",
+        "workshop": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\365960"
+    },
+    "league": {
+        "name": "Test Liga 23 S1",
+        "carCategory": "TestLiga, TestLiga 23 Saison 1",
+        "livery_file_suffix": "TST",
+        "versionPrefix": "TST23",
+        "upgradesFileName": "TestLigaUpgrades.ini",
+        "carFiles": [
+            "TestLigaUpgrades.ini",
+            "brand_logo.png"
+        ],
+        "cars": [
+            {
+                "id": "CAR_GT3_2023",
+                "workshopId": "123456789",
+                "versionOverwrite": "1.00"
+            },
+            {
+                "id": "CAR_GTE_2023",
+                "workshopId": "012345678",
+                "versionOverwrite": "1.00"
+            }
+        ],
+        "driver": [
+            {
+                "name": "Max Mustermann",
+                "number": 42,
+                "car": "CAR_GT3_2023",
+                "team": "M&M Racing"
+            },
+            {
+                "name": "Thomas Müller",
+                "number": 1,
+                "car": "CAR_GT3_2023",
+                "team": "M&M Racing"
+            },
+            {
+                "name": "John Stone",
+                "number": 13,
+                "car": "CAR_GTE_2023",
+                "team": "Ipsum Racing"
+            },
+            {
+                "name": "Jackie Meldrum",
+                "number": 14,
+                "car": "CAR_GTE_2023",
+                "team": "Ipsum Racing"
+            }
+        ]
+    }
+}
