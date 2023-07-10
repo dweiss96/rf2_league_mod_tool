@@ -1,0 +1,36 @@
+name: Release Build
+on:
+  push:
+    branches:
+      - main
+      - 'ci_test/**'
+
+jobs:
+  build_release:
+    name: Rust project
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - x86_64-pc-windows-gnu
+          - x86_64-apple-darwin
+          - aarch64-apple-darwin
+          - aarch64-unknown-linux-gnu
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+      - name: Build production artifact
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features --target=${{ matrix.target }}
+      - name: Archive production artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Release Artifact
+          path: target/release/rfactor2_league_mod_creator

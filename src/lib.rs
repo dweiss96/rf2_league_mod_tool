@@ -1,3 +1,5 @@
+#![cfg_attr(feature = "strict", deny(warnings))]
+
 pub mod models {
     automod::dir!(pub "src/models");
 }

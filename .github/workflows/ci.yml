@@ -1,0 +1,59 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+      - 'ci_test/**'
+  pull_request:
+    types: [opened, reopened, ready_for_review, unlocked, synchronize, auto_merge_enabled]
+
+
+jobs:
+  fmt_check:
+    name: Cargo check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --check
+  build_check:
+    name: Cargo check build without warnings
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --features "strict"
+  unit_test:
+    name: Cargo unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --lib
+  integration_test:
+    name: Cargo integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --test "*"
