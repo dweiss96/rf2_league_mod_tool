@@ -3,14 +3,6 @@ name = "rf2_ltc"
 version = "0.1.0"
 edition = "2021"
 build = "build.rs"
-#
-#[[bin]]
-#name = "rf2_ltc"
-#
-#[lib]
-#name = "rf2_ltc"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 slint = "1.1.0"
