@@ -1,0 +1,204 @@
+
+### CMPINFO ###
+[Component]
+Name=CAR_GT3_2023
+Type=2
+Version=1.01_TST23_v1.00
+BaseVersion=1.00
+MinVersion=
+Author=
+Date=0
+ID=
+URL=
+Desc=
+Category=3
+Origin=0
+Flags=1
+CurLocation=0
+NumLocations=1
+Location=TEMP/CAR_GT3_2023/CAR_GT3_2023_v1.01_TST23_v1.00.rfcmp
+NumMASFiles=1
+MASFile=TEMP/CAR_GT3_2023/CAR_GT3_2023_TST23.mas
+rFmFile=
+IconFile=
+SmallIconFile=
+
+
+
+### MASFILE ###
+
+FILE 42TST_region.dds
+VEHFILE 0TST.veh
+######
+// The first section defines what maps to load for the vehicle skinning technology.
+// The first line defines a "prefix" to be used for all generic maps.
+// Currently, generic maps are used for the livery, wing, driver, driver arms, driver helmet, and pit crew.
+// The second line will replace the default livery with the new specified, for the track specified.
+// The format is as follows:
+// DefaultLivery="PREFIX"       // PREFIX is the base texture map name, assumed to be BMP unless specified
+// PitCrewLivery="PREFIX"       // This is only needed if it differs from the default livery PREFIX
+// TrackLivery="TRACK, PREFIX"  // TRACK is the track name as defined in the event GDB
+// TrackLivery="TRACK, PREFIX"  // For example, "2004_Toban"
+// TrackLivery="TRACK, PREFIX"  // You can have an infinite # of these lines
+
+
+DefaultLivery="0TST.dds"
+MaterialOverride="CAR_GTE_2023_BaseMat.json"
+
+Extra0="window"      // Windows
+
+HDVehicle=CAR_GT3_2023.hdv
+Graphics=CAR_GT3_2023.gen
+Spinner=CAR_GT3_2023_Spinner.gen
+Upgrades=TestLigaUpgrades.ini
+GenString=A                   // Used to generate GMT names in *.gen file
+Cameras=CAR_GT3_2023.cam          // Defaults to cams.cfg in UserData directory
+Sounds=CAR_GT3_2023-snd.json          // Sounds=default.sfx
+HeadPhysics=HeadPhysics_GT.ini // Affects driver eyepoint only
+Cockpit=CAR_GT3_2023_cockpitinfo.ini
+AIUpgradeClass=CAR-GT3-2023
+ExternalDisplays=CAR_GT3_2023_externalDisplay.ini
+
+//////////////////////////TEAM HISTORY AND INFORMATION///////////////////////////////
+
+Number=0
+Team="Test Liga 23 S1"
+PitGroup="Group1"
+Driver="Guest Driver"
+Description="#0 Guest Driver"
+Engine="Testing 4.0L B6"
+Manufacturer="Testing"
+
+Classes="TestLiga-23S1"
+
+
+FullTeamName="Test Liga 23 S1"
+TeamHeadquarters=""
+
+Category="TestLiga, TestLiga 23 Saison 1, Car GT3 2023"
+######
+VEHFILE 42TST.veh
+######
+// The first section defines what maps to load for the vehicle skinning technology.
+// The first line defines a "prefix" to be used for all generic maps.
+// Currently, generic maps are used for the livery, wing, driver, driver arms, driver helmet, and pit crew.
+// The second line will replace the default livery with the new specified, for the track specified.
+// The format is as follows:
+// DefaultLivery="PREFIX"       // PREFIX is the base texture map name, assumed to be BMP unless specified
+// PitCrewLivery="PREFIX"       // This is only needed if it differs from the default livery PREFIX
+// TrackLivery="TRACK, PREFIX"  // TRACK is the track name as defined in the event GDB
+// TrackLivery="TRACK, PREFIX"  // For example, "2004_Toban"
+// TrackLivery="TRACK, PREFIX"  // You can have an infinite # of these lines
+
+
+DefaultLivery="42TST.dds"
+MaterialOverride="CAR_GTE_2023_BaseMat.json"
+
+Extra0="window"      // Windows
+
+HDVehicle=CAR_GT3_2023.hdv
+Graphics=CAR_GT3_2023.gen
+Spinner=CAR_GT3_2023_Spinner.gen
+Upgrades=TestLigaUpgrades.ini
+GenString=A                   // Used to generate GMT names in *.gen file
+Cameras=CAR_GT3_2023.cam          // Defaults to cams.cfg in UserData directory
+Sounds=CAR_GT3_2023-snd.json          // Sounds=default.sfx
+HeadPhysics=HeadPhysics_GT.ini // Affects driver eyepoint only
+Cockpit=CAR_GT3_2023_cockpitinfo.ini
+AIUpgradeClass=CAR-GT3-2023
+ExternalDisplays=CAR_GT3_2023_externalDisplay.ini
+
+//////////////////////////TEAM HISTORY AND INFORMATION///////////////////////////////
+
+Number=42
+Team="M&M Racing"
+PitGroup="Group1"
+Driver="Max Mustermann"
+Description="#42 Max Mustermann"
+Engine="Testing 4.0L B6"
+Manufacturer="Testing"
+
+Classes="TestLiga-23S1"
+
+
+FullTeamName="M&M Racing"
+TeamHeadquarters=""
+
+Category="TestLiga, TestLiga 23 Saison 1, Car GT3 2023"
+######
+FILE 0TST-icon-1024x576.png
+FILE 0TST-icon-512x288.png
+FILE 42TSTWindshieldIn.dds
+FILE 42TST-icon-2048x1152.png
+FILE 42TST.json
+FILE 0TST-icon-128x72.png
+FILE 69TST.dds
+FILE 42TST-icon-512x288.png
+FILE 42TSTicon.png
+FILE 0TST_region.dds
+FILE 42TST-icon-1024x576.png
+FILE 42TST-icon-128x72.png
+FILE 0TSTWindshieldIn.dds
+VEHFILE 69TST.veh
+######
+// The first section defines what maps to load for the vehicle skinning technology.
+// The first line defines a "prefix" to be used for all generic maps.
+// Currently, generic maps are used for the livery, wing, driver, driver arms, driver helmet, and pit crew.
+// The second line will replace the default livery with the new specified, for the track specified.
+// The format is as follows:
+// DefaultLivery="PREFIX"       // PREFIX is the base texture map name, assumed to be BMP unless specified
+// PitCrewLivery="PREFIX"       // This is only needed if it differs from the default livery PREFIX
+// TrackLivery="TRACK, PREFIX"  // TRACK is the track name as defined in the event GDB
+// TrackLivery="TRACK, PREFIX"  // For example, "2004_Toban"
+// TrackLivery="TRACK, PREFIX"  // You can have an infinite # of these lines
+
+
+DefaultLivery="69TST.dds"
+MaterialOverride="CAR_GTE_2023_BaseMat.json"
+
+Extra0="window"      // Windows
+
+HDVehicle=CAR_GT3_2023.hdv
+Graphics=CAR_GT3_2023.gen
+Spinner=CAR_GT3_2023_Spinner.gen
+Upgrades=TestLigaUpgrades.ini
+GenString=A                   // Used to generate GMT names in *.gen file
+Cameras=CAR_GT3_2023.cam          // Defaults to cams.cfg in UserData directory
+Sounds=CAR_GT3_2023-snd.json          // Sounds=default.sfx
+HeadPhysics=HeadPhysics_GT.ini // Affects driver eyepoint only
+Cockpit=CAR_GT3_2023_cockpitinfo.ini
+AIUpgradeClass=CAR-GT3-2023
+ExternalDisplays=CAR_GT3_2023_externalDisplay.ini
+
+//////////////////////////TEAM HISTORY AND INFORMATION///////////////////////////////
+
+Number=69
+Team="M&M Racing"
+PitGroup="Group1"
+Driver="Thomas Müller"
+Description="#69 Thomas Müller"
+Engine="Testing 4.0L B6"
+Manufacturer="Testing"
+
+Classes="TestLiga-23S1"
+
+
+FullTeamName="M&M Racing"
+TeamHeadquarters=""
+
+Category="TestLiga, TestLiga 23 Saison 1, Car GT3 2023"
+######
+FILE 69TST.json
+FILE cmpinfo.dat
+FILE 0TST-icon-2048x1152.png
+FILE 0TST-icon-256x144.png
+FILE 0TST.json
+FILE 42TST-icon-256x144.png
+FILE TestLigaUpgrades.ini
+FILE 0TSTWindshieldOut.dds
+FILE 0TST.dds
+FILE 69TST_region.dds
+FILE 0TSTicon.png
+FILE 42TSTWindshieldOut.dds
+FILE brand_logo.png
+FILE 42TST.dds
