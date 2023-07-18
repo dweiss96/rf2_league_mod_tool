@@ -27,6 +27,20 @@ SmallIconFile=
 
 ### MASFILE ###
 
+FILE 0TST-icon-1024x576.png
+
+FILE 0TST-icon-128x72.png
+
+FILE 0TST-icon-2048x1152.png
+
+FILE 0TST-icon-256x144.png
+
+FILE 0TST-icon-512x288.png
+
+FILE 0TST.dds
+
+FILE 0TST.json
+
 VEHFILE 0TST.veh
 ######
 // The first section defines what maps to load for the vehicle skinning technology.
@@ -76,10 +90,29 @@ TeamHeadquarters=""
 
 Category="TestLiga, TestLiga 23 Saison 1, Car GTE 2023"
 ######
-FILE 7TST.dds
-FILE 7TST.json
-FILE 0TST-icon-1024x576.png
-FILE 0TST-icon-512x288.png
+
+FILE 0TSTWindshieldIn.dds
+
+FILE 0TSTWindshieldOut.dds
+
+FILE 0TST_region.dds
+
+FILE 0TSTicon.png
+
+FILE 13TST-icon-1024x576.png
+
+FILE 13TST-icon-128x72.png
+
+FILE 13TST-icon-2048x1152.png
+
+FILE 13TST-icon-256x144.png
+
+FILE 13TST-icon-512x288.png
+
+FILE 13TST.dds
+
+FILE 13TST.json
+
 VEHFILE 13TST.veh
 ######
 // The first section defines what maps to load for the vehicle skinning technology.
@@ -129,23 +162,19 @@ TeamHeadquarters=""
 
 Category="TestLiga, TestLiga 23 Saison 1, Car GTE 2023"
 ######
-FILE 13TST-icon-128x72.png
-FILE 0TST-icon-128x72.png
-FILE 7TST_region.dds
-FILE 13TST-icon-512x288.png
-FILE 0TST_region.dds
-FILE 13TST_region.dds
-FILE 13TST-icon-2048x1152.png
-FILE 0TSTWindshieldIn.dds
+
 FILE 13TSTWindshieldIn.dds
-FILE cmpinfo.dat
-FILE 0TST-icon-2048x1152.png
-FILE 0TST-icon-256x144.png
-FILE 13TST.dds
-FILE 0TST.json
-FILE 13TST.json
-FILE 13TST-icon-256x144.png
-FILE TestLigaUpgrades.ini
+
+FILE 13TSTWindshieldOut.dds
+
+FILE 13TST_region.dds
+
+FILE 13TSTicon.png
+
+FILE 7TST.dds
+
+FILE 7TST.json
+
 VEHFILE 7TST.veh
 ######
 // The first section defines what maps to load for the vehicle skinning technology.
@@ -195,10 +224,11 @@ TeamHeadquarters=""
 
 Category="TestLiga, TestLiga 23 Saison 1, Car GTE 2023"
 ######
-FILE 0TSTWindshieldOut.dds
-FILE 0TST.dds
-FILE 13TST-icon-1024x576.png
-FILE 0TSTicon.png
-FILE 13TSTWindshieldOut.dds
-FILE 13TSTicon.png
+
+FILE 7TST_region.dds
+
+FILE TestLigaUpgrades.ini
+
 FILE brand_logo.png
+
+FILE cmpinfo.dat
