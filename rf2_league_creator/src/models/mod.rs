@@ -3,6 +3,7 @@ automod::dir!(pub "src/models");
 use crate::models::league::League;
 use crate::models::paths::Paths;
 
+use crate::error::*;
 use serde::{Deserialize, Serialize};
 
 #[cfg(test)]
@@ -10,20 +11,20 @@ mod tests {
     use super::*;
     #[test]
     fn it_can_decode_version() {
-        let vi_from_str = VersionSpec::decode_from_str("1.23");
+        let vi_from_str = VersionSpec::decode_from_str("1.23").unwrap();
         assert_eq!(vi_from_str.major, 1);
         assert_eq!(vi_from_str.minor, 23);
-        let vi_from_string = VersionSpec::decode_from_string("1.23".to_string());
+        let vi_from_string = VersionSpec::decode_from_string("1.23".to_string()).unwrap();
         assert_eq!(vi_from_string.major, 1);
         assert_eq!(vi_from_string.minor, 23);
     }
 
     #[test]
     fn it_can_decode_version_with_leading_zeroes() {
-        let vi_from_str = VersionSpec::decode_from_str("4.03");
+        let vi_from_str = VersionSpec::decode_from_str("4.03").unwrap();
         assert_eq!(vi_from_str.major, 4);
         assert_eq!(vi_from_str.minor, 3);
-        let vi_from_string = VersionSpec::decode_from_string("4.03".to_string());
+        let vi_from_string = VersionSpec::decode_from_string("4.03".to_string()).unwrap();
         assert_eq!(vi_from_string.major, 4);
         assert_eq!(vi_from_string.minor, 3);
     }
@@ -64,15 +65,17 @@ impl VersionSpec {
     pub fn empty() -> VersionSpec {
         VersionSpec { minor: 0, major: 0 }
     }
-    pub fn decode_from_string(version: String) -> VersionSpec {
+    pub fn decode_from_string(version: String) -> Result<VersionSpec, CaughtError> {
         VersionSpec::decode_from_str(version.as_str())
     }
-    pub fn decode_from_str(version: &str) -> VersionSpec {
-        let (major, minor) = version.split_once(".").unwrap();
-        VersionSpec {
-            minor: minor.parse::<u8>().unwrap(),
-            major: major.parse::<u8>().unwrap(),
-        }
+    pub fn decode_from_str(version: &str) -> Result<VersionSpec, CaughtError> {
+        let (major_str, minor_str) = version.split_once('.').catch_none(
+            "could not split version string into major and minor component".to_string(),
+        )?;
+        Ok(VersionSpec {
+            minor: minor_str.parse::<u8>().catch_err()?,
+            major: major_str.parse::<u8>().catch_err()?,
+        })
     }
     pub fn encode_to_string(&self) -> String {
         format!("{}.{:0>2}", self.major, self.minor)

@@ -36,7 +36,7 @@ pub fn modmgr_setup() -> TempDir {
     std::fs::create_dir_all(wsp.clone()).unwrap();
     copy_dir_all(example_files_dir.join("workshop"), wsp);
 
-    let modmgr_mock = Path::new(manifest_dir.clone().unwrap().as_str())
+    let modmgr_mock = Path::new(manifest_dir.unwrap().as_str())
         .join("tests")
         .join("mocks")
         .join("modmgr.rs");

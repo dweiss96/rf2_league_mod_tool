@@ -4,6 +4,7 @@ use std::{
     io::{BufRead, BufReader},
     thread,
 };
+use crate::error::*;
 
 ///
 /// Function to run a process and send it's output while running.
@@ -20,30 +21,31 @@ pub fn run_process_with_piped_output_and_wait(
     command: &str,
     args: Vec<&str>,
     sender: Sender<String>,
-) {
+) -> Result<(), CaughtError> {
     let mut child = Command::new(command)
         .args(args)
         .stdout(Stdio::piped())
         .spawn()
-        .unwrap();
+        .catch_err()?;
 
     let stdout = child
         .stdout
         .take()
-        .ok_or_else(|| "Could not connect to StdOut")
-        .unwrap();
+        .catch_none("Could not connect to StdOut".to_string())?;
+
     let reader = BufReader::new(stdout);
 
     let output = thread::spawn({
-        let s = sender.clone();
+        let s = sender;
         move || {
             reader
                 .lines()
-                .filter_map(|line| line.ok())
-                .for_each(|line| s.send(line).unwrap_or_default());
+                .map_while(|line| line.ok())
+                .for_each(|line| s.send(line).unwrap_or(()));
         }
     });
 
-    let _ = child.wait().unwrap();
-    output.join().unwrap()
+    let res = child.wait();
+    output.join().catch_err_with_msg("could not join output child process".to_string())?;
+    res.catch_err().map(|_| {})
 }

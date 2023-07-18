@@ -7,8 +7,6 @@ use std::path::{Path, PathBuf};
 use std::thread;
 
 #[cfg(test)]
-use pretty_assertions;
-
 mod common;
 
 fn get_config(cmd_path: &PathBuf, ws_path: &PathBuf, vo: Option<String>) -> Config {
@@ -59,7 +57,7 @@ fn get_league_cars_and_drivers(vo: Option<String>) -> (League, Vec<Car>, Vec<Dri
         Car {
             id: "CAR_GTE_2023".to_string(),
             workshop_id: "012345678".to_string(),
-            version_overwrite: vo.clone(),
+            version_overwrite: vo,
         },
     ];
 
@@ -75,7 +73,7 @@ fn get_league_cars_and_drivers(vo: Option<String>) -> (League, Vec<Car>, Vec<Dri
         drivers: drivers.clone(),
     };
 
-    return (league, cars, drivers);
+    (league, cars, drivers)
 }
 
 #[test]
@@ -134,7 +132,8 @@ fn it_works_as_expected_with_config_struct_and_fixed_version() {
                 "1.0",
                 Path::new(tdd.as_str()).join(".out").to_str().unwrap(),
                 tx.clone(),
-            );
+            )
+            .unwrap();
         }
     });
 
@@ -162,14 +161,20 @@ fn it_works_as_expected_with_config_struct_and_fixed_version() {
     // println!("{}", td.path().to_str().unwrap());
     // thread::sleep(std::time::Duration::from_secs(60));
 
-    let files_in_out: Vec<String> = Vec::from_iter(std::fs::read_dir(td.path().join(".out"))
-        .unwrap()
-        .map(|er| er.unwrap().file_name().to_str().unwrap().to_string()).into_iter());
-
+    let files_in_out: Vec<String> = Vec::from_iter(
+        std::fs::read_dir(td.path().join(".out"))
+            .unwrap()
+            .map(|er| er.unwrap().file_name().to_str().unwrap().to_string()),
+    );
 
     assert_eq!(
         files_in_out,
-        vec!["CAR_GTE_2023_v1.00.rfcmp", "CAR_GT3_2023_v1.00.rfcmp", "CAR_GT3_2023_v1.01_TST23_v1.00.rfcmp", "CAR_GTE_2023_v1.01_TST23_v1.00.rfcmp"]
+        vec![
+            "CAR_GTE_2023_v1.00.rfcmp",
+            "CAR_GT3_2023_v1.00.rfcmp",
+            "CAR_GT3_2023_v1.01_TST23_v1.00.rfcmp",
+            "CAR_GTE_2023_v1.01_TST23_v1.00.rfcmp"
+        ]
     );
 
     assert_equal_files(
@@ -226,7 +231,8 @@ fn it_works_as_expected_with_config_struct_and_fixed_version_with_missing_worksh
                 "1.0",
                 Path::new(tdd.as_str()).join(".out").to_str().unwrap(),
                 tx.clone(),
-            );
+            )
+            .unwrap();
         }
     });
 
@@ -254,14 +260,20 @@ fn it_works_as_expected_with_config_struct_and_fixed_version_with_missing_worksh
     // println!("{}", td.path().to_str().unwrap());
     // thread::sleep(std::time::Duration::from_secs(60));
 
-    let files_in_out: Vec<String> = Vec::from_iter(std::fs::read_dir(td.path().join(".out"))
-        .unwrap()
-        .map(|er| er.unwrap().file_name().to_str().unwrap().to_string()).into_iter());
-
+    let files_in_out: Vec<String> = Vec::from_iter(
+        std::fs::read_dir(td.path().join(".out"))
+            .unwrap()
+            .map(|er| er.unwrap().file_name().to_str().unwrap().to_string()),
+    );
 
     assert_eq!(
         files_in_out,
-        vec!["CAR_GTE_2023_v1.00.rfcmp", "CAR_GT3_2023_v1.00.rfcmp", "CAR_GT3_2023_v1.01_TST23_v1.00.rfcmp", "CAR_GTE_2023_v1.01_TST23_v1.00.rfcmp"]
+        vec![
+            "CAR_GTE_2023_v1.00.rfcmp",
+            "CAR_GT3_2023_v1.00.rfcmp",
+            "CAR_GT3_2023_v1.01_TST23_v1.00.rfcmp",
+            "CAR_GTE_2023_v1.01_TST23_v1.00.rfcmp"
+        ]
     );
 
     assert_equal_files(
@@ -319,7 +331,8 @@ fn it_works_as_expected_with_config_struct_and_dynamic_version() {
                 "1.0",
                 Path::new(tdd.as_str()).join(".out").to_str().unwrap(),
                 tx.clone(),
-            );
+            )
+            .unwrap();
         }
     });
 
@@ -347,14 +360,20 @@ fn it_works_as_expected_with_config_struct_and_dynamic_version() {
     // println!("{}", td.path().to_str().unwrap());
     // thread::sleep(std::time::Duration::from_secs(60));
 
-    let files_in_out: Vec<String> = Vec::from_iter(std::fs::read_dir(td.path().join(".out"))
-        .unwrap()
-        .map(|er| er.unwrap().file_name().to_str().unwrap().to_string()).into_iter());
-
+    let files_in_out: Vec<String> = Vec::from_iter(
+        std::fs::read_dir(td.path().join(".out"))
+            .unwrap()
+            .map(|er| er.unwrap().file_name().to_str().unwrap().to_string()),
+    );
 
     assert_eq!(
         files_in_out,
-        vec!["CAR_GTE_2023_v1.00.rfcmp", "CAR_GT3_2023_v1.00.rfcmp", "CAR_GT3_2023_v1.03_TST23_v1.00.rfcmp", "CAR_GTE_2023_v1.03_TST23_v1.00.rfcmp"]
+        vec![
+            "CAR_GTE_2023_v1.00.rfcmp",
+            "CAR_GT3_2023_v1.00.rfcmp",
+            "CAR_GT3_2023_v1.03_TST23_v1.00.rfcmp",
+            "CAR_GTE_2023_v1.03_TST23_v1.00.rfcmp"
+        ]
     );
 
     assert_equal_files(

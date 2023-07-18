@@ -24,7 +24,7 @@ mod tests {
             drivers: Vec::from([driver.clone()])
         };
 
-        return (league, driver)
+        (league, driver)
     }
 
     #[test]
@@ -246,7 +246,7 @@ mod tests {
 }
 
 pub fn substitute_veh_fields(template: &str, league_config: League, driver: Driver) -> String {
-    return template
+    template
         .replace("{{CLASS}}", &league_config.car_class)
         .replace("{{CATEGORY}}", &league_config.car_category)
         .replace("{{UPGRADES}}", &league_config.upgrades_file_name)
@@ -254,5 +254,5 @@ pub fn substitute_veh_fields(template: &str, league_config: League, driver: Driv
         .replace("{{NUMBER}}", &format!("{}", driver.number))
         .replace("{{NUMBER_DESC}}", &format!("{}", driver.number))
         .replace("{{DRIVER}}", &driver.name)
-        .replace("{{TEAMNAME}}", &driver.team);
+        .replace("{{TEAMNAME}}", &driver.team)
 }

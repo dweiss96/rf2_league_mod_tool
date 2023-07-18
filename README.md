@@ -8,3 +8,10 @@ Cargo Watch: `cargo install cargo-watch`
 One Time: `cargo run`
 With Watcher: `cargo watch -c -x run`
 
+
+### Code Quality
+Test: `cargo test`
+
+Fmt: `cargo fmt`
+
+Lint: `cargo clippy`

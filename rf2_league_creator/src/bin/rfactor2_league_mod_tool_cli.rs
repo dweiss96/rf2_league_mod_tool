@@ -23,15 +23,21 @@ fn main() {
         print!("{}", opts.usage(&format!("Usage: {} [options]", program)));
         return;
     }
-    let output = matches.opt_str("o").unwrap_or(std::env::current_dir().unwrap().join("output").to_str().unwrap().to_string());
+    let output = matches.opt_str("o").unwrap_or(
+        std::env::current_dir()
+            .unwrap()
+            .join("output")
+            .to_str()
+            .unwrap()
+            .to_string(),
+    );
     let version = matches.opt_str("v").unwrap_or("1.0".to_string());
 
     let (tx, rx) = std::sync::mpsc::channel::<String>();
 
     let _ = std::thread::spawn(move || loop {
-        match rx.recv() {
-            Ok(line) => println!("rf2cli: {}", line),
-            _ => {}
+        if let Ok(line) = rx.recv() {
+            println!("rf2cli: {}", line)
         }
     });
 
@@ -40,6 +46,7 @@ fn main() {
         version.as_str(),
         output.as_str(),
         tx,
-    );
+    )
+    .unwrap(); // CLI is allowed to panic in case of an error
     td.close().unwrap();
 }

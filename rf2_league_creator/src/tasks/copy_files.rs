@@ -1,5 +1,6 @@
 use std::fs;
 use std::path::Path;
+use crate::error::*;
 use crate::models::league::League;
 use crate::models::driver::Driver;
 use crate::tasks::create_veh_file;
@@ -57,10 +58,10 @@ mod test {
             drivers: drivers.clone()
         };
 
-        return (league, cars, drivers)
+        (league, cars, drivers)
     }
 
-    fn work_in_tmp_dir<F>(func: F, subfolder: Option<String>) -> String where F: Fn(&str) -> () {
+    fn work_in_tmp_dir<F>(func: F, subfolder: Option<String>) -> String where F: Fn(&str) {
         // Create a directory inside of `std::env::temp_dir()`.
         let tmp_dir = tempdir().expect("Could not create test ");
         let tmp_dir_path = tmp_dir.path().to_str().unwrap();
@@ -68,9 +69,9 @@ mod test {
         func(tmp_dir_path);
 
         let files = fs::read_dir(Path::new(tmp_dir_path).join(subfolder.unwrap_or_default())).unwrap()
-            .map(|e| format!("{}", e.unwrap().file_name().to_str().unwrap()))
+            .map(|e| e.unwrap().file_name().to_str().unwrap().to_string())
             .filter(|f| f.ne(".DS_Store"))
-            .fold(String::new(), |acc,dir| if acc.is_empty() { format!("{}", dir) }else{ format!("{};{}", acc, dir)});
+            .fold(String::new(), |acc,dir| if acc.is_empty() { dir.to_string() }else{ format!("{};{}", acc, dir)});
 
         // By closing the `TempDir` explicitly, we can check that it has
         // been deleted successfully. If we don't close it explicitly,
@@ -78,14 +79,14 @@ mod test {
         // of scope, but we won't know whether deleting the directory
         // succeeded.
         tmp_dir.close().unwrap();
-        return files;
+        files
     }
 
     #[test]
     fn copies_league_files() {
         // let (league, driver) = get_league_and_driver();
         let result_files = work_in_tmp_dir(|tmp_dir| {
-            copy_league_files("tests/example_files", tmp_dir);
+            copy_league_files("tests/example_files", tmp_dir).unwrap();
         }, None);
         assert_eq!("CAR_GTE_2023_v1.00.rfcmp;CAR_GT3_2023_v1.00.rfcmp",result_files)
     }
@@ -95,7 +96,7 @@ mod test {
         let (_, cars, _) = get_league_cars_and_drivers();
         let car_id = cars.first().unwrap().id.as_str();
         let result_files = work_in_tmp_dir(|tmp_dir| {
-            copy_car_files("tests/example_files", tmp_dir, car_id);
+            copy_car_files("tests/example_files", tmp_dir, car_id).unwrap();
         }, Some(car_id.to_string()));
         assert_eq!("TestLigaUpgrades.ini;brand_logo.png",result_files)
     }
@@ -104,76 +105,84 @@ mod test {
     fn copies_driver_files() {
         let (league, _, drivers) = get_league_cars_and_drivers();
         let result_files = work_in_tmp_dir(|tmp_dir| {
-            copy_driver_files("tests/example_files", tmp_dir, league.clone(), drivers.first().unwrap().clone());
+            copy_driver_files("tests/example_files", tmp_dir, league.clone(), drivers.first().unwrap().clone()).unwrap();
         }, Some(drivers.first().unwrap().clone().car));
         assert_eq!("42TST_region.dds;42TSTWindshieldIn.dds;42TST-icon-2048x1152.png;42TST.json;42TST-icon-512x288.png;42TSTicon.png;42TST-icon-1024x576.png;42TST-icon-128x72.png;42TST-icon-256x144.png;42TSTWindshieldOut.dds;42TST.dds",result_files)
     }
 }
 
-pub fn copy(cfg_dir: &str, tmp_dir: &str, league: League) {
-    copy_league_files(cfg_dir, tmp_dir);
+pub fn copy(cfg_dir: &str, tmp_dir: &str, league: League) -> Result<(), CaughtError> {
+    copy_league_files(cfg_dir, tmp_dir)?;
     for c in league.clone().cars {
-        copy_car_files(cfg_dir, tmp_dir, c.id.as_str());
+        copy_car_files(cfg_dir, tmp_dir, c.id.as_str())?;
         // copy driver files for placeholder
         copy_driver_files(cfg_dir, tmp_dir, league.clone(), Driver {
             name: "Guest Driver".to_string(),
             number: 0,
             team: league.clone().name,
             car: c.id,
-        });
+        })?;
     }
     for d in league.clone().drivers {
-        copy_driver_files(cfg_dir, tmp_dir, league.clone(), d);
+        copy_driver_files(cfg_dir, tmp_dir, league.clone(), d)?;
     }
+    Ok(())
 }
 
-fn copy_league_files(cfg_dir: &str, tmp_dir: &str) {
+fn copy_league_files(cfg_dir: &str, tmp_dir: &str) -> Result<(), CaughtError> {
     let src_dir = Path::new(cfg_dir).join("_league");
     let out_dir = Path::new(tmp_dir);
 
-    fs::read_dir(src_dir.clone()).unwrap().for_each(|entry| {
-        let de = entry.unwrap();
-        let _ = fs::copy(src_dir.join(de.file_name()), out_dir.join(de.file_name()));
-    });
+    let dir_contents = fs::read_dir(src_dir.clone()).catch_err()?;
+    dir_contents.map(|entry| {
+        let de = entry.catch_err()?;
+        fs::copy(src_dir.join(de.file_name()), out_dir.join(de.file_name())).catch_err().map(|_| {})
+    })
+        .find(|e| e.is_err())
+        .unwrap_or(Ok(()))
 }
 
-fn copy_car_files(cfg_dir: &str, tmp_dir: &str, car_dir: &str) {
+fn copy_car_files(cfg_dir: &str, tmp_dir: &str, car_dir: &str) -> Result<(), CaughtError> {
     let src_dir = Path::new(cfg_dir).join(car_dir);
     let out_dir = Path::new(tmp_dir).join(car_dir);
 
-    fs::create_dir_all(out_dir.to_str().unwrap()).unwrap();
-    fs::read_dir(src_dir.clone()).unwrap().for_each(|entry| {
-        let efn = entry.unwrap().file_name();
-        let entry_name = efn.to_str().unwrap();
-        // match entry.unwrap().file_name().to_str().unwrap() {
+    let out_dir_path = out_dir.to_str().catch_none("could not decode output directory path".to_string())?;
+    fs::create_dir_all(out_dir_path).catch_err()?;
+    fs::read_dir(src_dir.clone()).catch_err()?.map(|entry| {
+        let efn = entry.catch_err()?.file_name();
+        let entry_name = efn.to_str().catch_none("could not decode file entry name".to_string())?;
+
         match entry_name {
-            "skins" => {},
-            "_vehicle.veh" => {},
-            ".DS_Store" => {},
-            file => {
-                let _ = fs::copy(src_dir.join(file), out_dir.join(file));
-            }
+            "skins" => Ok(()),
+            "_vehicle.veh" => Ok(()),
+            ".DS_Store" => Ok(()),
+            file => fs::copy(src_dir.join(file), out_dir.join(file)).catch_err().map(|_| {})
         }
-    });
+    })
+        .find(|e| e.is_err())
+        .unwrap_or(Ok(()))
 }
 
-fn copy_driver_files(cfg_dir: &str, tmp_dir: &str, league: League, driver: Driver) {
+fn copy_driver_files(cfg_dir: &str, tmp_dir: &str, league: League, driver: Driver) -> Result<(), CaughtError> {
     let veh_file: String = String::from_utf8_lossy(
-        &fs::read(Path::new(cfg_dir).join(driver.clone().car).join("_vehicle.veh")).unwrap()
+        &fs::read(Path::new(cfg_dir).join(driver.clone().car).join("_vehicle.veh")).catch_err()?
     ).to_string();
-    let src_dir = Path::new(cfg_dir).join(driver.clone().car).join("skins").join(format!("{}", driver.clone().number));
+    let src_dir = Path::new(cfg_dir).join(driver.clone().car).join("skins").join(format!("{}", driver.number));
     let out_dir = Path::new(tmp_dir).join(driver.clone().car);
 
     let skin_file_name = format!("{}{}{}", league.livery_file_prefix.clone().unwrap_or_default(), driver.number, league.livery_file_suffix.clone().unwrap_or_default());
 
     let updated_veh = create_veh_file::substitute_veh_fields(veh_file.as_str(), league, driver);
-    let _ = fs::write(out_dir.join(format!("{}.veh",skin_file_name.clone())), updated_veh);
+    let _ = fs::write(out_dir.join(format!("{}.veh",skin_file_name)), updated_veh);
 
-    fs::create_dir_all(out_dir.to_str().unwrap()).unwrap();
-    fs::read_dir(src_dir.clone()).unwrap().for_each(|entry| {
-        let fname = entry.unwrap().file_name();
-        let new_fname = fname.clone().to_str().unwrap().replace("skin", skin_file_name.as_str());
+    let out_dir_path = out_dir.to_str().catch_none("could not decode output directory path".to_string())?;
+    fs::create_dir_all(out_dir_path).catch_err()?;
+    fs::read_dir(src_dir.clone()).catch_err()?.map(|entry| {
+        let fname = entry.catch_err()?.file_name();
+        let new_fname = fname.to_str().catch_none("could not decode file entry name".to_string())?.replace("skin", skin_file_name.as_str());
 
-        let _ = fs::copy(src_dir.join(fname), out_dir.join(new_fname));
-    });
+        fs::copy(src_dir.join(fname), out_dir.join(new_fname)).catch_err().map(|_| {})
+    })
+        .find(|e| e.is_err())
+        .unwrap_or(Ok(()))
 }
