@@ -15,3 +15,6 @@ Test: `cargo test`
 Fmt: `cargo fmt`
 
 Lint: `cargo clippy`
+
+fmt check mode: `cargo fmt --check`
+strict ci LINT: `RUSTFLAGS="-D warnings" cargo clippy`
