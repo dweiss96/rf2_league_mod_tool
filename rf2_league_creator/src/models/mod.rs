@@ -1,0 +1,87 @@
+automod::dir!(pub "src/models");
+
+use crate::models::league::League;
+use crate::models::paths::Paths;
+
+use serde::{Deserialize, Serialize};
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn it_can_decode_version() {
+        let vi_from_str = VersionSpec::decode_from_str("1.23");
+        assert_eq!(vi_from_str.major, 1);
+        assert_eq!(vi_from_str.minor, 23);
+        let vi_from_string = VersionSpec::decode_from_string("1.23".to_string());
+        assert_eq!(vi_from_string.major, 1);
+        assert_eq!(vi_from_string.minor, 23);
+    }
+
+    #[test]
+    fn it_can_decode_version_with_leading_zeroes() {
+        let vi_from_str = VersionSpec::decode_from_str("4.03");
+        assert_eq!(vi_from_str.major, 4);
+        assert_eq!(vi_from_str.minor, 3);
+        let vi_from_string = VersionSpec::decode_from_string("4.03".to_string());
+        assert_eq!(vi_from_string.major, 4);
+        assert_eq!(vi_from_string.minor, 3);
+    }
+    #[test]
+    fn it_can_encode_version() {
+        let vi = VersionSpec {
+            major: 1,
+            minor: 23,
+        };
+        assert_eq!(vi.encode_to_string(), "1.23".to_string());
+    }
+
+    #[test]
+    fn it_can_encode_version_with_leading_zeroes() {
+        let vi = VersionSpec { major: 4, minor: 3 };
+        assert_eq!(vi.encode_to_string(), "4.03".to_string());
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct Config {
+    pub paths: Paths,
+    pub league: League,
+}
+
+pub struct VersionInfo {
+    pub base_version: VersionSpec,
+    pub modpack_version: VersionSpec,
+}
+
+pub struct VersionSpec {
+    pub minor: u8,
+    pub major: u8,
+}
+
+impl VersionSpec {
+    pub fn empty() -> VersionSpec {
+        VersionSpec { minor: 0, major: 0 }
+    }
+    pub fn decode_from_string(version: String) -> VersionSpec {
+        VersionSpec::decode_from_str(version.as_str())
+    }
+    pub fn decode_from_str(version: &str) -> VersionSpec {
+        let (major, minor) = version.split_once(".").unwrap();
+        VersionSpec {
+            minor: minor.parse::<u8>().unwrap(),
+            major: major.parse::<u8>().unwrap(),
+        }
+    }
+    pub fn encode_to_string(&self) -> String {
+        format!("{}.{:0>2}", self.major, self.minor)
+    }
+
+    pub fn incremented(&self) -> VersionSpec {
+        VersionSpec {
+            major: self.major,
+            minor: self.minor + 1,
+        }
+    }
+}

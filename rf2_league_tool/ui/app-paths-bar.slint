@@ -1,0 +1,91 @@
+import { Button } from "std-widgets.slint";
+import { WorkshopPathController } from "controller/workshop-path.slint";
+import { Rfactor2PathController } from "controller/rfactor2-path.slint";
+import { FilePathSelection } from "components/file-selection.slint";
+
+export { WorkshopPathController, Rfactor2PathController }
+
+component ValidatableLogo inherits Rectangle {
+  in-out property<image> logo;
+  in-out property<bool> is-valid;
+  
+  background: darkorange;
+  states [
+    valid when is-valid : {
+      background: darkgreen;
+      out {
+        animate * { duration: 500ms; }
+      }
+      in {
+        animate * { duration: 500ms; }
+      }
+    }
+  ]
+
+  Image {
+    width: parent.width;
+    height: parent.height;
+    source: logo;
+  }
+}
+
+export component AppPathsBar inherits Rectangle {
+  in-out property<image> steam-logo;
+  in-out property<image> rf2-logo;
+  in-out property<bool> steam-valid: WorkshopPathController.is-valid;
+  in-out property<bool> rf2-valid: Rfactor2PathController.is-valid;
+
+  height: 50px;
+
+  HorizontalLayout {
+    spacing: 10px;
+    padding: 10px;
+    ValidatableLogo {
+      height: 40px;
+      width: 40px;
+      logo: steam-logo;
+      is-valid: steam-valid;
+    }
+    ValidatableLogo {
+      height: 40px;
+      width: 40px;
+      logo: rf2-logo;
+      is-valid: rf2-valid;
+    }
+    Button {
+      width: 100px;
+      text: "Set Paths";
+      clicked => { popup.show() }
+    }
+  }
+
+  popup := PopupWindow {
+    close-on-click: false;
+    VerticalLayout {
+      spacing: 10px;
+      FilePathSelection{
+        width: 100%;
+        label: "Path of rF2 workshop files:";
+        path: WorkshopPathController.path;
+        is-valid: WorkshopPathController.is-valid;
+        path-accepted(s) => { WorkshopPathController.path-accepted(s) }
+        choose-click => { WorkshopPathController.choose-dir() }
+        edited => { WorkshopPathController.is-valid = false }
+      }
+      FilePathSelection{
+        width: 100%;
+        label: "Path of rF2 ModMgr.exe:";
+        path: Rfactor2PathController.path;
+        is-valid: Rfactor2PathController.is-valid;
+        path-accepted(s) => { Rfactor2PathController.path-accepted(s) }
+        choose-click => { Rfactor2PathController.choose-dir() }
+        edited => { Rfactor2PathController.is-valid = false }
+      }
+      Button {
+        width: 100px;
+        text: "Finish";
+        clicked => { popup.close() }
+      }
+    }
+  }
+}
