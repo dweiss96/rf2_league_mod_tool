@@ -32,5 +32,5 @@ pub fn generate_mod(
     target_dir: &str,
     sender: std::sync::mpsc::Sender<String>,
 ) {
-    // TODO: implement
+    tasks::generate(config, temp_dir, target_dir, version, sender);
 }
