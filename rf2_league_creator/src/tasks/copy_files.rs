@@ -61,7 +61,7 @@ mod test {
         (league, cars, drivers)
     }
 
-    fn work_in_tmp_dir<F>(func: F, subfolder: Option<String>) -> String where F: Fn(&str) {
+    fn work_in_tmp_dir<F>(func: F, subfolder: Option<String>) -> Vec<String> where F: Fn(&str) {
         // Create a directory inside of `std::env::temp_dir()`.
         let tmp_dir = tempdir().expect("Could not create test ");
         let tmp_dir_path = tmp_dir.path().to_str().unwrap();
@@ -71,7 +71,7 @@ mod test {
         let files = fs::read_dir(Path::new(tmp_dir_path).join(subfolder.unwrap_or_default())).unwrap()
             .map(|e| e.unwrap().file_name().to_str().unwrap().to_string())
             .filter(|f| f.ne(".DS_Store"))
-            .fold(String::new(), |acc,dir| if acc.is_empty() { dir.to_string() }else{ format!("{};{}", acc, dir)});
+            .collect::<Vec<String>>();
 
         // By closing the `TempDir` explicitly, we can check that it has
         // been deleted successfully. If we don't close it explicitly,
@@ -88,7 +88,7 @@ mod test {
         let result_files = work_in_tmp_dir(|tmp_dir| {
             copy_league_files("tests/example_files", tmp_dir).unwrap();
         }, None);
-        assert_eq!("CAR_GTE_2023_v1.00.rfcmp;CAR_GT3_2023_v1.00.rfcmp",result_files)
+        assert!(vec!["CAR_GTE_2023_v1.00.rfcmp","CAR_GT3_2023_v1.00.rfcmp"].iter().map(|s| {result_files.contains(&s.to_string())}).fold(true, |acc, v | {acc && v}))
     }
 
     #[test]
@@ -98,7 +98,7 @@ mod test {
         let result_files = work_in_tmp_dir(|tmp_dir| {
             copy_car_files("tests/example_files", tmp_dir, car_id).unwrap();
         }, Some(car_id.to_string()));
-        assert_eq!("TestLigaUpgrades.ini;brand_logo.png",result_files)
+        assert!(vec!["TestLigaUpgrades.ini","brand_logo.png"].iter().map(|s| {result_files.contains(&s.to_string())}).fold(true, |acc, v | {acc && v}))
     }
 
     #[test]
@@ -107,7 +107,19 @@ mod test {
         let result_files = work_in_tmp_dir(|tmp_dir| {
             copy_driver_files("tests/example_files", tmp_dir, league.clone(), drivers.first().unwrap().clone()).unwrap();
         }, Some(drivers.first().unwrap().clone().car));
-        assert_eq!("42TST_region.dds;42TSTWindshieldIn.dds;42TST-icon-2048x1152.png;42TST.json;42TST-icon-512x288.png;42TSTicon.png;42TST-icon-1024x576.png;42TST-icon-128x72.png;42TST-icon-256x144.png;42TSTWindshieldOut.dds;42TST.dds",result_files)
+        assert!(vec![
+            "42TST.dds",
+            "42TST.json",
+            "42TST_region.dds",
+            "42TSTWindshieldIn.dds",
+            "42TSTWindshieldOut.dds",
+            "42TSTicon.png",
+            "42TST-icon-128x72.png",
+            "42TST-icon-256x144.png",
+            "42TST-icon-512x288.png",
+            "42TST-icon-1024x576.png",
+            "42TST-icon-2048x1152.png",
+        ].iter().map(|s| {result_files.contains(&s.to_string())}).fold(true, |acc, v | {acc && v}))
     }
 }
 
