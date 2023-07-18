@@ -167,15 +167,15 @@ fn it_works_as_expected_with_config_struct_and_fixed_version() {
             .map(|er| er.unwrap().file_name().to_str().unwrap().to_string()),
     );
 
-    assert_eq!(
-        files_in_out,
-        vec![
-            "CAR_GTE_2023_v1.00.rfcmp",
-            "CAR_GT3_2023_v1.00.rfcmp",
-            "CAR_GT3_2023_v1.01_TST23_v1.00.rfcmp",
-            "CAR_GTE_2023_v1.01_TST23_v1.00.rfcmp"
-        ]
-    );
+    assert!(vec![
+        "CAR_GTE_2023_v1.00.rfcmp",
+        "CAR_GT3_2023_v1.00.rfcmp",
+        "CAR_GT3_2023_v1.01_TST23_v1.00.rfcmp",
+        "CAR_GTE_2023_v1.01_TST23_v1.00.rfcmp"
+    ]
+    .iter()
+    .map(|e| { files_in_out.contains(&e.to_string()) })
+    .fold(true, |acc, v| { acc && v }));
 
     assert_equal_files(
         td.path().to_str().unwrap(),
@@ -266,15 +266,15 @@ fn it_works_as_expected_with_config_struct_and_fixed_version_with_missing_worksh
             .map(|er| er.unwrap().file_name().to_str().unwrap().to_string()),
     );
 
-    assert_eq!(
-        files_in_out,
-        vec![
-            "CAR_GTE_2023_v1.00.rfcmp",
-            "CAR_GT3_2023_v1.00.rfcmp",
-            "CAR_GT3_2023_v1.01_TST23_v1.00.rfcmp",
-            "CAR_GTE_2023_v1.01_TST23_v1.00.rfcmp"
-        ]
-    );
+    assert!(vec![
+        "CAR_GTE_2023_v1.00.rfcmp",
+        "CAR_GT3_2023_v1.00.rfcmp",
+        "CAR_GT3_2023_v1.01_TST23_v1.00.rfcmp",
+        "CAR_GTE_2023_v1.01_TST23_v1.00.rfcmp"
+    ]
+    .iter()
+    .map(|e| { files_in_out.contains(&e.to_string()) })
+    .fold(true, |acc, v| { acc && v }));
 
     assert_equal_files(
         td.path().to_str().unwrap(),
@@ -356,7 +356,7 @@ fn it_works_as_expected_with_config_struct_and_dynamic_version() {
         )
     );
 
-    // // Debug tmp dir after generation
+    // Debug tmp dir after generation
     // println!("{}", td.path().to_str().unwrap());
     // thread::sleep(std::time::Duration::from_secs(60));
 
@@ -366,15 +366,15 @@ fn it_works_as_expected_with_config_struct_and_dynamic_version() {
             .map(|er| er.unwrap().file_name().to_str().unwrap().to_string()),
     );
 
-    assert_eq!(
-        files_in_out,
-        vec![
-            "CAR_GTE_2023_v1.00.rfcmp",
-            "CAR_GT3_2023_v1.00.rfcmp",
-            "CAR_GT3_2023_v1.03_TST23_v1.00.rfcmp",
-            "CAR_GTE_2023_v1.03_TST23_v1.00.rfcmp"
-        ]
-    );
+    assert!(vec![
+        "CAR_GTE_2023_v1.00.rfcmp",
+        "CAR_GT3_2023_v1.00.rfcmp",
+        "CAR_GT3_2023_v1.03_TST23_v1.00.rfcmp",
+        "CAR_GTE_2023_v1.03_TST23_v1.00.rfcmp"
+    ]
+    .iter()
+    .map(|e| { files_in_out.contains(&e.to_string()) })
+    .fold(true, |acc, v| { acc && v }));
 
     assert_equal_files(
         td.path().to_str().unwrap(),

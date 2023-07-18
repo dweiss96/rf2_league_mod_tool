@@ -27,7 +27,20 @@ SmallIconFile=
 
 ### MASFILE ###
 
-FILE 42TST_region.dds
+FILE 0TST-icon-1024x576.png
+
+FILE 0TST-icon-128x72.png
+
+FILE 0TST-icon-2048x1152.png
+
+FILE 0TST-icon-256x144.png
+
+FILE 0TST-icon-512x288.png
+
+FILE 0TST.dds
+
+FILE 0TST.json
+
 VEHFILE 0TST.veh
 ######
 // The first section defines what maps to load for the vehicle skinning technology.
@@ -77,6 +90,29 @@ TeamHeadquarters=""
 
 Category="TestLiga, TestLiga 23 Saison 1, Car GT3 2023"
 ######
+
+FILE 0TSTWindshieldIn.dds
+
+FILE 0TSTWindshieldOut.dds
+
+FILE 0TST_region.dds
+
+FILE 0TSTicon.png
+
+FILE 42TST-icon-1024x576.png
+
+FILE 42TST-icon-128x72.png
+
+FILE 42TST-icon-2048x1152.png
+
+FILE 42TST-icon-256x144.png
+
+FILE 42TST-icon-512x288.png
+
+FILE 42TST.dds
+
+FILE 42TST.json
+
 VEHFILE 42TST.veh
 ######
 // The first section defines what maps to load for the vehicle skinning technology.
@@ -126,19 +162,19 @@ TeamHeadquarters=""
 
 Category="TestLiga, TestLiga 23 Saison 1, Car GT3 2023"
 ######
-FILE 0TST-icon-1024x576.png
-FILE 0TST-icon-512x288.png
+
 FILE 42TSTWindshieldIn.dds
-FILE 42TST-icon-2048x1152.png
-FILE 42TST.json
-FILE 0TST-icon-128x72.png
-FILE 69TST.dds
-FILE 42TST-icon-512x288.png
+
+FILE 42TSTWindshieldOut.dds
+
+FILE 42TST_region.dds
+
 FILE 42TSTicon.png
-FILE 0TST_region.dds
-FILE 42TST-icon-1024x576.png
-FILE 42TST-icon-128x72.png
-FILE 0TSTWindshieldIn.dds
+
+FILE 69TST.dds
+
+FILE 69TST.json
+
 VEHFILE 69TST.veh
 ######
 // The first section defines what maps to load for the vehicle skinning technology.
@@ -188,17 +224,11 @@ TeamHeadquarters=""
 
 Category="TestLiga, TestLiga 23 Saison 1, Car GT3 2023"
 ######
-FILE 69TST.json
-FILE cmpinfo.dat
-FILE 0TST-icon-2048x1152.png
-FILE 0TST-icon-256x144.png
-FILE 0TST.json
-FILE 42TST-icon-256x144.png
-FILE TestLigaUpgrades.ini
-FILE 0TSTWindshieldOut.dds
-FILE 0TST.dds
+
 FILE 69TST_region.dds
-FILE 0TSTicon.png
-FILE 42TSTWindshieldOut.dds
+
+FILE TestLigaUpgrades.ini
+
 FILE brand_logo.png
-FILE 42TST.dds
+
+FILE cmpinfo.dat

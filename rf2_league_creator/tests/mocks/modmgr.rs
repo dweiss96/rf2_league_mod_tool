@@ -1,5 +1,6 @@
 use std::env;
 use std::path::Path;
+use std::iter::FromIterator;
 
 fn main() {
     // check for `-q` flag
@@ -44,23 +45,30 @@ fn main() {
             assert!(Path::new(mas_path.as_str()).file_name().unwrap().to_str().unwrap().ends_with(".mas"), "mas path needs to end with the correct extension");
 
             // read files for test assertion
-            let mut mas_content = "".to_string();
+            let mut mas_content: Vec<(String, String)> = Vec::new();
+            // let mut mas_content = "".to_string();
             let files = std::fs::read_dir(Path::new(mas_path.as_str()).parent().unwrap()).unwrap();
             files.map(|r| r.unwrap()).for_each(|e| {
-                if e.file_name().to_str().unwrap().ends_with(".veh") {
+                let mut single_file_content = String::new();
+                let efn = e.file_name();
+                let filename = efn.to_str().unwrap();
+                if filename.ends_with(".veh") {
                     // .veh files is copied as text since these are modified by the tool
-                    mas_content.push_str(format!("\nVEHFILE {}", e.file_name().to_str().unwrap()).as_str());
-                    mas_content.push_str("\n######");
-                    mas_content.push_str(format!("\n{}", String::from_utf8(std::fs::read(e.path()).unwrap()).unwrap()).as_str());
-                    mas_content.push_str("\n######");
+                    single_file_content.push_str(format!("\nVEHFILE {}", e.file_name().to_str().unwrap()).as_str());
+                    single_file_content.push_str("\n######");
+                    single_file_content.push_str(format!("\n{}", String::from_utf8(std::fs::read(e.path()).unwrap()).unwrap()).as_str());
+                    single_file_content.push_str("\n######");
                 } else {
                     // all other files are just renamed and content is of no interest
-                    mas_content.push_str(format!("\nFILE {}", e.file_name().to_str().unwrap()).as_str());
+                    single_file_content.push_str(format!("\nFILE {}", e.file_name().to_str().unwrap()).as_str());
                 }
+                mas_content.push((filename.to_string(), single_file_content))
             });
 
+            mas_content.sort_by(|a,b| a.0.cmp(&b.0));
+
             // write mas file for later validation
-            std::fs::write(Path::new(mas_path.as_str()), mas_content).unwrap();
+            std::fs::write(Path::new(mas_path.as_str()), Vec::from_iter(mas_content.iter().map(|p| {p.1.clone()})).join("\n")).unwrap();
 
             println!("mas");
         } else {
