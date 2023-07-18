@@ -98,6 +98,14 @@ fn it_can_setup_tests() {
 fn assert_equal_files(td: &str, src: impl AsRef<Path>, dst: impl AsRef<Path>) {
     let src_content = std::fs::read(src).unwrap();
     let dst_content = std::fs::read(dst).unwrap();
+    assert!(
+        !String::from_utf8_lossy(src_content.as_slice()).is_empty(),
+        "src_content is empty"
+    );
+    assert!(
+        !String::from_utf8_lossy(dst_content.as_slice()).is_empty(),
+        "dst_content is empty"
+    );
     pretty_assertions::assert_eq!(
         String::from_utf8_lossy(src_content.as_slice()).replace(td, "TEMP"),
         String::from_utf8_lossy(dst_content.as_slice()).replace(td, "TEMP")
