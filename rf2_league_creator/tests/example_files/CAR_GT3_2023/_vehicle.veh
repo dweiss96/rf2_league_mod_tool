@@ -1,0 +1,46 @@
+// The first section defines what maps to load for the vehicle skinning technology.
+// The first line defines a "prefix" to be used for all generic maps.
+// Currently, generic maps are used for the livery, wing, driver, driver arms, driver helmet, and pit crew.
+// The second line will replace the default livery with the new specified, for the track specified.
+// The format is as follows:
+// DefaultLivery="PREFIX"       // PREFIX is the base texture map name, assumed to be BMP unless specified
+// PitCrewLivery="PREFIX"       // This is only needed if it differs from the default livery PREFIX
+// TrackLivery="TRACK, PREFIX"  // TRACK is the track name as defined in the event GDB
+// TrackLivery="TRACK, PREFIX"  // For example, "2004_Toban"
+// TrackLivery="TRACK, PREFIX"  // You can have an infinite # of these lines
+
+
+DefaultLivery="{{LIVERY}}.dds"
+MaterialOverride="CAR_GTE_2023_BaseMat.json"
+
+Extra0="window"      // Windows
+
+HDVehicle=CAR_GT3_2023.hdv
+Graphics=CAR_GT3_2023.gen
+Spinner=CAR_GT3_2023_Spinner.gen
+Upgrades={{UPGRADES}}
+GenString=A                   // Used to generate GMT names in *.gen file
+Cameras=CAR_GT3_2023.cam          // Defaults to cams.cfg in UserData directory
+Sounds=CAR_GT3_2023-snd.json          // Sounds=default.sfx
+HeadPhysics=HeadPhysics_GT.ini // Affects driver eyepoint only
+Cockpit=CAR_GT3_2023_cockpitinfo.ini
+AIUpgradeClass=CAR-GT3-2023
+ExternalDisplays=CAR_GT3_2023_externalDisplay.ini
+
+//////////////////////////TEAM HISTORY AND INFORMATION///////////////////////////////
+
+Number={{NUMBER}}
+Team="{{TEAMNAME}}"
+PitGroup="Group1"
+Driver="{{DRIVER}}"
+Description="#{{NUMBER_DESC}} {{DRIVER}}"
+Engine="Testing 4.0L B6"
+Manufacturer="Testing"
+
+Classes="{{CLASS}}"
+
+
+FullTeamName="{{TEAMNAME}}"
+TeamHeadquarters=""
+
+Category="{{CATEGORY}}, Car GT3 2023"
