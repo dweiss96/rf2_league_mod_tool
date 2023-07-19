@@ -21,7 +21,7 @@ pub fn initialize(main: Main, generator_thread: ThreadHandle, output_thread: Thr
     ww.upgrade().unwrap().global::<GeneratorState>().set_current_state_description(SharedString::from("Copying Files"));
 
     let local_generator_thread = thread::spawn({ let txx = tx.clone(); move || {
-      generate_mod_with_json_default("temp", "1.0", "target", txx);
+      generate_mod_with_json_default("temp", "1.0", "target", txx).ok().unwrap_or(());
     }});
 
     generator_thread.lock().unwrap().replace(local_generator_thread);
