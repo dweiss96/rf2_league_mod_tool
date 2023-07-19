@@ -1,3 +1,5 @@
 /target
 .vscode
 tarpaulin-report.html
+lcov.info
+.cargo
