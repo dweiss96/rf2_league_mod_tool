@@ -112,7 +112,7 @@ pub fn generate(
         .catch_err()?
         .map(|er| {
             let e = er.catch_err()?;
-            if e.file_type().catch_err()?.is_dir() {
+            if e.file_type().catch_err()?.is_dir() && e.path().ne(Path::new(target_dir)) {
                 fs::read_dir(e.path())
                     .catch_err()?
                     .map(|entry| {
