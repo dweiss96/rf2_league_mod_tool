@@ -6,7 +6,7 @@ build = "build.rs"
 
 [dependencies]
 automod = "1.0"
-slint = "1.1.0"
+slint = "1.1.1"
 rf2_league_creator = { path = "../rf2_league_creator" }
 rfd = "0.11.4"
 glob = "0.3.1"
@@ -14,4 +14,4 @@ image = "0.24.6"
 base64 = "0.21.2"
 
 [build-dependencies]
-slint-build = "1.1.0"
+slint-build = "1.1.1"
