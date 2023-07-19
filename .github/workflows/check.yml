@@ -4,14 +4,6 @@ on:
     types: [opened, reopened, ready_for_review, unlocked, synchronize, auto_merge_enabled]
 
 jobs:
-  test:
-    name: cargo test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
-      - run: cargo test --all-features
-
   # Check formatting with rustfmt
   formatting:
     name: cargo fmt
@@ -24,10 +16,10 @@ jobs:
       - name: Rustfmt Check
         uses: actions-rust-lang/rustfmt@v1
 
-
   # Check formatting with rustfmt
   linting:
     name: cargo clippy
+    needs: formatting
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -36,3 +28,21 @@ jobs:
           components: clippy
       - name: Rustfmt Check
         run: cargo clippy
+
+  coverage_report:
+    name: Generate coverage report (90%+)
+    needs: linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup LCOV
+        uses: hrishikesh-kadam/setup-lcov@v1
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo install cargo-tarpaulin
+      - run: cargo tarpaulin -p rf2_league_creator -o Html --fail-under 90
+      - name: Archive code coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report-tarpaulin
+          path: tarpaulin-report.html
