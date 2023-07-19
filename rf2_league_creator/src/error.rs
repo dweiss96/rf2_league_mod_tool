@@ -1,5 +1,135 @@
 use std::any::Any;
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde::Deserialize;
+    use std::fmt::{Debug, Display, Formatter};
+    use std::io::ErrorKind;
+
+    #[derive(Deserialize)]
+    struct TestError {
+        pub err_msg: String,
+    }
+
+    impl Debug for TestError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            f.write_str(self.err_msg.as_str())
+        }
+    }
+
+    impl Display for TestError {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            f.write_str(self.err_msg.as_str())
+        }
+    }
+
+    impl std::error::Error for TestError {}
+
+    #[test]
+    fn io_error_is_catchable() {
+        let err = std::io::Error::new(ErrorKind::NotFound, "error");
+        assert_eq!(err.catch().msg, "error");
+        assert_eq!(
+            err.catch_with_msg("custom error msg".to_string()).msg,
+            "custom error msg"
+        );
+    }
+
+    #[test]
+    fn from_utf8_error_is_catchable() {
+        // some invalid bytes, in a vector
+        let bytes = vec![0, 159];
+
+        let err = String::from_utf8(bytes).err().unwrap();
+        assert_eq!(
+            err.catch().msg,
+            "invalid utf-8 sequence of 1 bytes from index 1"
+        );
+        assert_eq!(
+            err.catch_with_msg("custom error msg".to_string()).msg,
+            "custom error msg"
+        );
+    }
+
+    #[test]
+    fn parse_int_error_is_catchable() {
+        let err = "no int".parse::<i8>().err().unwrap();
+        assert_eq!(err.catch().msg, "invalid digit found in string");
+        assert_eq!(
+            err.catch_with_msg("custom error msg".to_string()).msg,
+            "custom error msg"
+        );
+    }
+
+    #[test]
+    fn serde_json_error_is_catchable() {
+        let err = serde_json::from_str::<TestError>("no json").err().unwrap();
+        assert_eq!(err.catch().msg, "expected ident at line 1 column 2");
+        assert_eq!(
+            err.catch_with_msg("custom error msg".to_string()).msg,
+            "custom error msg"
+        );
+    }
+
+    // #[test]
+    // fn std_error_error_is_catchable() {
+    //     let base_err =  TestError { err_msg: "error" };
+    //     let err: dyn std::error::Error = &base_err;
+    //     assert_eq!(err.catch().msg, "error");
+    //     assert_eq!(err.catch_with_msg("custom error msg".to_string()).msg, "custom error msg");
+    // }
+
+    // #[test]
+    // fn joinhandle_error_is_catchable() {
+    //     // let err = std::io::Error::new(ErrorKind::NotFound, "error");
+    //     assert_eq!(err.catch().msg, "error");
+    //     assert_eq!(
+    //         err.catch_with_msg("custom error msg".to_string()).msg,
+    //         "custom error msg"
+    //     );
+    // }
+
+    #[test]
+    fn result_of_catchable_can_be_caught() {
+        let err_res = "no int".parse::<i8>();
+        assert_eq!(
+            err_res.clone().catch_err().err().unwrap().msg,
+            "invalid digit found in string"
+        );
+        assert_eq!(
+            err_res
+                .catch_err_with_msg("custom error msg".to_string())
+                .err()
+                .unwrap()
+                .msg,
+            "custom error msg"
+        );
+    }
+
+    #[test]
+    fn any_empty_option_can_be_caught() {
+        let err_opt = "no int".parse::<i8>().ok();
+        let custom_opt = None::<u8>;
+        assert_eq!(
+            err_opt
+                .catch_none("custom error msg".to_string())
+                .err()
+                .unwrap()
+                .msg,
+            "custom error msg"
+        );
+        assert_eq!(
+            custom_opt
+                .catch_none("custom error msg".to_string())
+                .err()
+                .unwrap()
+                .msg,
+            "custom error msg"
+        );
+    }
+}
+
 #[derive(Debug)]
 pub struct CaughtError {
     pub msg: String,
