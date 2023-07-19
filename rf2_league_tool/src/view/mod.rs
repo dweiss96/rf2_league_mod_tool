@@ -14,7 +14,7 @@ pub fn initialize_main_window(generator_thread: ThreadHandle, output_thread: Thr
     generator_controller::initialize(main_window.clone_strong(), generator_thread, output_thread);
 
     load_images(main_window.clone_strong());
-    return main_window;
+    main_window
 }
 
 fn load_images(window: Main) {

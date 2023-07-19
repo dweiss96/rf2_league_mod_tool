@@ -41,12 +41,9 @@ pub fn initialize(main: Main, generator_thread: ThreadHandle, output_thread: Thr
   let weak_main = main.as_weak();
   let local_output_thread = thread::spawn(move || {
     loop {
-      match rx.recv() {
-        Ok(line) => {
-          let handle_copy = weak_main.clone();
-          let _ = slint::invoke_from_event_loop(move || handle_copy.unwrap().global::<GeneratorState>().invoke_add_log_line(line.into()));
-        },
-        _ => {}
+      if let Ok(line) = rx.recv() {
+        let handle_copy = weak_main.clone();
+        slint::invoke_from_event_loop(move || handle_copy.unwrap().global::<GeneratorState>().invoke_add_log_line(line.into())).unwrap_or(());
       }
     }
   });
