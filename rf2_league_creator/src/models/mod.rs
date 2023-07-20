@@ -1,5 +1,7 @@
 automod::dir!(pub "src/models");
 
+use std::fs;
+use std::path::Path;
 use crate::models::league::League;
 use crate::models::paths::Paths;
 
@@ -49,6 +51,16 @@ mod tests {
 pub struct Config {
     pub paths: Paths,
     pub league: League,
+}
+
+impl Config {
+    pub fn write_to(&self, p: &Path) -> Result<(), CaughtError> {
+        fs::write(p, serde_json::to_vec(self).catch_err()?).catch_err()
+    }
+    pub fn read_from(p: &Path) -> Result<Config, CaughtError> {
+        let rdr = fs::read(p).catch_err()?;
+        serde_json::from_slice(rdr.as_slice()).catch_err()
+    }
 }
 
 pub struct VersionInfo {

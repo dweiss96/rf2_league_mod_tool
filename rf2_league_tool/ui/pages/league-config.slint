@@ -1,14 +1,113 @@
 import { Button, LineEdit} from "std-widgets.slint";
+import { ConfigurationState } from "../configuration.slint";
 
-export component GeneralLeagueConfig inherits Rectangle {
-  background: darkorange;
+component LeagueConfigLine inherits Rectangle {
+  in-out property <string> label;
+  in-out property <string> value;
+  callback edited(string);
+
+  height: 30px;
   Text {
     x: 0;
     y: 0;
     font-size: 20px;
-    text: "Here comes League Config";
+    width: 300px;
+    text: label;
     vertical-alignment: center;
-    padding-left: 20px;
     color: white;
+  }
+  LineEdit {
+    x: 300px;
+    y: 0px;
+    width: 500px;
+    text: value;
+    edited => {
+      edited(self.text)
+    }
+  }
+}
+
+export component GeneralLeagueConfig inherits Rectangle {
+  // background: darkorange;
+  VerticalLayout {
+    spacing: 10px;
+    padding: 10px;
+    LeagueConfigLine {
+      label: "Name";
+      value: ConfigurationState.data.league-config.name;
+      edited(new-value) => {
+        ConfigurationState.data.league-config.name = new-value;
+      }
+    }
+    LeagueConfigLine {
+      label: "Car Category (for rF2 Menu)";
+      value: ConfigurationState.data.league-config.category;
+      edited(new-value) => {
+        ConfigurationState.data.league-config.category = new-value;
+      }
+    }
+    LeagueConfigLine {
+      label: "Car Class (for LogAnalyzer)";
+      value: ConfigurationState.data.league-config.class;
+      edited(new-value) => {
+        ConfigurationState.data.league-config.class = new-value;
+      }
+    }
+    LeagueConfigLine {
+      label: "Upgrades File Name";
+      value: ConfigurationState.data.league-config.upgrade-file;
+      edited(new-value) => {
+        ConfigurationState.data.league-config.upgrade-file = new-value;
+      }
+    }
+    HorizontalLayout {
+      height: 30px;
+      Text {
+        font-size: 20px;
+        width: 300px;
+        text: "Livery File Naming (.dds files in MAS)";
+        vertical-alignment: center;
+        color: white;
+      }
+      LineEdit {
+        width: 100px;
+        text: ConfigurationState.data.league-config.livery-file-prefix;
+        edited => {
+          ConfigurationState.data.league-config.livery-file-prefix = self.text;
+        }
+      }
+      Text {
+        font-size: 20px;
+        width: 20px;
+        text: "##";
+        vertical-alignment: center;
+        color: white;
+      }
+      LineEdit {
+        width: 100px;
+        text: ConfigurationState.data.league-config.livery-file-suffix;
+        edited => {
+          ConfigurationState.data.league-config.livery-file-suffix = self.text;
+        }
+      }
+    }
+    LeagueConfigLine {
+      label: "Version Prefix";
+      value: ConfigurationState.data.league-config.version-prefix;
+      edited(new-value) => {
+        ConfigurationState.data.league-config.version-prefix = new-value;
+      }
+    }
+    Button {
+      height: 50px;
+      text: "Save Config";
+      clicked => {
+        ConfigurationState.save-config();
+      }
+    }
+  }
+
+  init => {
+    ConfigurationState.read-config();
   }
 }

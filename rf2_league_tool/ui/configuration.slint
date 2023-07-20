@@ -1,0 +1,63 @@
+export struct DriverConfiguration {
+  name: string,
+  number: int,
+  car: string,
+  team: string,
+}
+
+export struct CarConfiguration {
+  id: string,
+  workshop-id: string,
+  version-overwrite: string,
+}
+
+export struct LeagueConfiguration {
+  name: string,
+  category: string,
+  class: string,
+  upgrade-file: string,
+  livery-file-prefix: string,
+  livery-file-suffix: string,
+  version-prefix: string,
+  cars: [CarConfiguration],
+  driver: [DriverConfiguration],
+}
+
+export struct Configuration {
+  modmgr-path:string,
+  modmgr-found: bool,
+  workshop-path:string,
+  workshop-found: bool,
+  league-config:LeagueConfiguration,
+}
+
+export global ConfigurationState {
+  in-out property <Configuration> data;
+
+  pure callback modmgr-choose-dir();
+  pure callback workshop-choose-dir();
+  pure callback read-config();
+  pure callback save-config();
+
+  callback set-config(Configuration);
+  set-config(cfg) => {
+    data = cfg
+  }
+}
+// export global Configuration {
+//   in-out property <string> modmgr-path;
+//   in-out property <bool> modmgr-found: false;
+//   in-out property <string> workshop-path;
+//   in-out property <bool> workshop-found: false;
+//   in-out property <LeagueConfiguration> league-config;
+
+//   pure callback modmgr-path-accepted(string);
+//   pure callback modmgr-choose-dir();
+
+//   pure callback workshop-path-accepted(string);
+//   pure callback workshop-choose-dir();
+
+//   pure callback read-config();
+//   callback set-config(Configuration);
+//   set-config(cfg) => { data = cfg }
+// }

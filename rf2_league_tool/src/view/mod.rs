@@ -9,6 +9,7 @@ pub fn initialize_main_window(generator_thread: ThreadHandle, output_thread: Thr
     let main_window = Main::new().unwrap();
 
     // initialize controller
+    config_state_controller::initialize(main_window.clone_strong());
     workshop_path_controller::initialize(main_window.clone_strong());
     modmgr_path_controller::initialize(main_window.clone_strong());
     generator_controller::initialize(main_window.clone_strong(), generator_thread, output_thread);
