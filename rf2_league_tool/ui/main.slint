@@ -20,7 +20,7 @@ export component Main inherits Window {
   property<string> mgr-path: "";
 
   preferred-width: 1000px;
-  preferred-height: 500px;
+  preferred-height: 800px;
   padding: 10px;
   background: black;
   AppPathsBar { 
@@ -43,6 +43,7 @@ export component Main inherits Window {
   TabWidget {
     x: 0;
     y: 100px;
+    height: 600px;
     Tab {
       title: "General Data";
       GeneralLeagueConfig {}
@@ -55,6 +56,14 @@ export component Main inherits Window {
     Tab {
       title: "Drivers Data";
       DriversConfig {}
+    }
+  }
+  Button {
+    y: 710px;
+    height: 50px;
+    text: "Save Config";
+    clicked => {
+      ConfigurationState.save-config();
     }
   }
 }

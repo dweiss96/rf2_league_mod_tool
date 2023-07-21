@@ -98,13 +98,6 @@ export component GeneralLeagueConfig inherits Rectangle {
         ConfigurationState.data.league-config.version-prefix = new-value;
       }
     }
-    Button {
-      height: 50px;
-      text: "Save Config";
-      clicked => {
-        ConfigurationState.save-config();
-      }
-    }
   }
 
   init => {
