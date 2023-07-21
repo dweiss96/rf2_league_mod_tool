@@ -20,6 +20,7 @@ export struct LeagueConfiguration {
   livery-file-suffix: string,
   version-prefix: string,
   cars: [CarConfiguration],
+  car-names: [string],
   driver: [DriverConfiguration],
 }
 
@@ -39,9 +40,29 @@ export global ConfigurationState {
   pure callback read-config();
   pure callback save-config();
 
+  pure callback update-car-version(int, string);
+  // move-car(index: i32, movement: i32)
+  pure callback move-car(int, int);
+  pure callback delete-car(int);
+  // add-car(id: string, workshop_id: string, version_overwrite: string)
+  pure callback add-car(string, string, string);
+
+  pure callback update-driver-team(int, string);
+  pure callback update-driver-car(int, string);
+  // move-car(index: i32, movement: i32)
+  pure callback move-driver(int, int);
+  pure callback delete-driver(int);
+  // add-car(name: string, number: string, car: string, team: string)
+  pure callback add-driver(string, string, string, string);
+
   callback set-config(Configuration);
   set-config(cfg) => {
     data = cfg
+  }
+
+  callback set-car-names([string]);
+  set-car-names(names) => {
+    data.league-config.car-names = names;
   }
 }
 // export global Configuration {

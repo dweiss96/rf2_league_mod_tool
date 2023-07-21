@@ -95,6 +95,9 @@ impl Into<Configuration> for Config {
                         version_overwrite: SharedString::from(c.clone().version_overwrite.unwrap_or_default()),
                     }).into_iter()
                 )))),
+                car_names: ModelRc::<SharedString>::from(Rc::new(VecModel::from(Vec::from_iter(
+                    self.league.cars.iter().map(|c| SharedString::from(c.clone().id)).into_iter()
+                )))),
                 driver: ModelRc::from(Rc::from(VecModel::from(Vec::from_iter(
                     self.league.drivers.iter().map(|d| DriverConfiguration {
                         name: SharedString::from(d.clone().name),

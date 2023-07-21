@@ -1,14 +1,132 @@
-import { Button, LineEdit} from "std-widgets.slint";
+import { Button, LineEdit, ListView , ComboBox} from "std-widgets.slint";
+import { ConfigurationState } from "../configuration.slint";
 
-export component DriversConfig inherits Rectangle {
-  background: darkorange;
+component DriverEntry inherits HorizontalLayout {
+  in-out property <string> name;
+  in-out property <int> number;
+  in-out property <string> car;
+  in-out property <string> team;
+  callback edited-team(string);
+  callback edited-car(string);
+  callback move-up();
+  callback move-down();
+  callback delete();
+  spacing: 10px;
+  height: 30px;
   Text {
-    x: 0;
-    y: 0;
-    font-size: 20px;
-    text: "Here comes Drivers Config";
     vertical-alignment: center;
-    padding-left: 20px;
-    color: white;
+    text: name;
+  }
+  Text {
+    width: 100px;
+    vertical-alignment: center;
+    text: number;
+  }
+  LineEdit {
+    width: 200px;
+    text: car;
+    edited => { edited-car(self.text); }
+  }
+  LineEdit {
+    width: 300px;
+    text: team;
+    edited => { edited-team(self.text); }
+  }
+  Button {
+    width: 40px;
+    text: "^";
+    clicked => { move-up() }
+  }
+  Button {
+    width: 40px;
+    text: "v";
+    clicked => { move-down() }
+  }
+  Button {
+    width: 40px;
+    text: "X";
+    clicked => { delete() }
+  }
+}
+
+export component DriversConfig inherits VerticalLayout {
+  spacing: 20px;
+  HorizontalLayout {
+    height: 30px;
+    spacing: 10px;
+    Text {
+      vertical-alignment: center;
+      font-size: 20px;
+      text: "Name";
+    }
+    Text {
+      width: 100px;
+      vertical-alignment: center;
+      font-size: 20px;
+      text: "Number";
+    }
+    Text {
+      width: 200px;
+      vertical-alignment: center;
+      font-size: 20px;
+      text: "Car";
+    }
+    Text {
+      width: 300px;
+      vertical-alignment: center;
+      font-size: 20px;
+      text: "Team";
+    }
+    Text {
+      width: 140px;
+
+      vertical-alignment: center;
+      font-size: 20px;
+      text: "Actions";
+    }
+  }
+  Rectangle {
+    height: 2px;
+    width: parent.width;
+    border-color: white;
+    border-width: 1px;
+  }
+  ListView {
+    height: parent.height - 200px;
+    for data[index] in ConfigurationState.data.league-config.driver : DriverEntry {
+      name: data.name;
+      car: data.car;
+      team: data.team;
+      number: data.number;
+      edited-car(value) => { ConfigurationState.update-driver-car(index, value) }
+      edited-team(value) => { ConfigurationState.update-driver-team(index, value) }
+      delete => { ConfigurationState.delete-driver(index) }
+      move-up => { ConfigurationState.move-driver(index, -1) }
+      move-down => { ConfigurationState.move-driver(index, +1) }
+    }
+  }
+  HorizontalLayout {
+    spacing: 10px;
+    height: 30px;
+    name := LineEdit {
+      placeholder-text: "Name";
+    }
+    number := LineEdit {
+      width: 100px;
+      placeholder-text: "Number";
+    }
+    car := LineEdit { 
+      width: 200px;
+      placeholder-text: "Car";
+    }
+    team := LineEdit {
+      width: 300px;
+      placeholder-text: "Team";
+    }
+    Button {
+      width: 140px;
+      text: "Add";
+      clicked => { ConfigurationState.add-driver(name.text, number.text, car.text, team.text) }
+    }
   }
 }

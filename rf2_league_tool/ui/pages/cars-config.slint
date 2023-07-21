@@ -1,14 +1,116 @@
-import { Button, LineEdit} from "std-widgets.slint";
+import { Button, LineEdit, ListView } from "std-widgets.slint";
+import { ConfigurationState } from "../configuration.slint";
 
-export component CarsConfig inherits Rectangle {
-  background: darkorange;
-  Text {
-    x: 0;
-    y: 0;
-    font-size: 20px;
-    text: "Here comes Car Config";
+component CarEntry inherits HorizontalLayout {
+  in-out property <string> car-name;
+  in-out property <string> car-id;
+  in-out property <string> car-version;
+  callback edited(string);
+  callback move-up();
+  callback move-down();
+  callback delete();
+  spacing: 10px;
+  height: 30px;
+  TextInput {
+    read-only: true;
+    width: 200px;
     vertical-alignment: center;
-    padding-left: 20px;
-    color: white;
+    text: car-name;
+  }
+  TextInput {
+    read-only: true;
+    width: 200px;
+    vertical-alignment: center;
+    text: car-id;
+  }
+  LineEdit {
+    text: car-version;
+    edited => { edited(self.text); }
+  }
+  Button {
+    width: 40px;
+    text: "^";
+    clicked => { move-up() }
+  }
+  Button {
+    width: 40px;
+    text: "v";
+    clicked => { move-down() }
+  }
+  Button {
+    width: 40px;
+    text: "X";
+    clicked => { delete() }
+  }
+}
+
+export component CarsConfig inherits VerticalLayout {
+  spacing: 20px;
+  HorizontalLayout {
+    height: 30px;
+    spacing: 10px;
+    Text {
+      width: 200px;
+      vertical-alignment: center;
+      font-size: 20px;
+      text: "car id / name";
+    }
+    Text {
+      width: 200px;
+      vertical-alignment: center;
+      font-size: 20px;
+      text: "workshop id";
+    }
+    Text {
+      text: "fixed version (optional)";
+      font-size: 20px;
+
+      vertical-alignment: center;
+    }
+    Text {
+      width: 140px;
+
+      font-size: 20px;
+      vertical-alignment: center;
+      text: "Actions";
+    }
+  }
+  Rectangle {
+    height: 2px;
+    width: parent.width;
+    border-color: white;
+    border-width: 1px;
+  }
+  ListView {
+    height: parent.height - 200px;
+    for data[index] in ConfigurationState.data.league-config.cars : CarEntry {
+      car-name: data.id;
+      car-id: data.workshop-id;
+      car-version: data.version-overwrite;
+      edited(value) => { ConfigurationState.update-car-version(index, value) }
+      delete => { ConfigurationState.delete-car(index) }
+      move-up => { ConfigurationState.move-car(index, -1) }
+      move-down => { ConfigurationState.move-car(index, +1) }
+    }
+  }
+  HorizontalLayout {
+    spacing: 10px;
+    height: 30px;
+    name := LineEdit {
+      width: 200px;
+      placeholder-text: "car name (with underscores)";
+    }
+    workshop := LineEdit {
+      width: 200px;
+      placeholder-text: "workshop id number";
+    }
+    version := LineEdit {
+      placeholder-text: "fixed version to use (optional)";
+    }
+    Button {
+      width: 140px;
+      text: "Add";
+      clicked => { ConfigurationState.add-car(name.text, workshop.text, version.text) }
+    }
   }
 }
