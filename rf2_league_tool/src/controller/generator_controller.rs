@@ -3,7 +3,7 @@ use std::sync::mpsc;
 use crate::ThreadHandle;
 use slint::{ComponentHandle, SharedString};
 
-use rf2_league_creator::generate_mod_with_json_default;
+use rf2_league_creator::generate_mod;
 
 use crate::slint_generatedMain::*;
 
@@ -21,7 +21,10 @@ pub fn initialize(main: Main, generator_thread: ThreadHandle, output_thread: Thr
     ww.upgrade().unwrap().global::<GeneratorState>().set_current_state_description(SharedString::from("Copying Files"));
 
     let local_generator_thread = thread::spawn({ let txx = tx.clone(); move || {
-      generate_mod_with_json_default("temp", "1.0", "target", txx).ok().unwrap_or(());
+      generate_mod(
+        ww.unwrap().global::<ConfigurationState>().get_data().into(), "temp", "1.0", "target", txx
+      );
+      // generate_mod_with_json_default("temp", "1.0", "target", txx).ok().unwrap_or(());
     }});
 
     generator_thread.lock().unwrap().replace(local_generator_thread);
